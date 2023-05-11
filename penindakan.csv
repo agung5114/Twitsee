@@ -1,0 +1,196 @@
+﻿NO,PROVINSI,Tahun,Jumlah Penindakan
+2,Provinsi Aceh,2004,1
+2,Provinsi Aceh,2005,1
+2,Provinsi Aceh,2008,1
+2,Provinsi Aceh,2013,2
+2,Provinsi Aceh,2015,1
+2,Provinsi Aceh,2018,8
+3,Provinsi Sumatera Utara,2007,2
+3,Provinsi Sumatera Utara,2010,2
+3,Provinsi Sumatera Utara,2011,1
+3,Provinsi Sumatera Utara,2013,3
+3,Provinsi Sumatera Utara,2014,3
+3,Provinsi Sumatera Utara,2015,15
+3,Provinsi Sumatera Utara,2016,7
+3,Provinsi Sumatera Utara,2017,5
+3,Provinsi Sumatera Utara,2018,22
+3,Provinsi Sumatera Utara,2019,4
+3,Provinsi Sumatera Utara,2020,9
+3,Provinsi Sumatera Utara,2021,5
+3,Provinsi Sumatera Utara,2022,6
+4,Provinsi Sumatera Selatan,2009,1
+4,Provinsi Sumatera Selatan,2010,1
+4,Provinsi Sumatera Selatan,2014,2
+4,Provinsi Sumatera Selatan,2015,5
+4,Provinsi Sumatera Selatan,2016,7
+4,Provinsi Sumatera Selatan,2017,1
+4,Provinsi Sumatera Selatan,2018,1
+4,Provinsi Sumatera Selatan,2019,4
+4,Provinsi Sumatera Selatan,2020,3
+4,Provinsi Sumatera Selatan,2021,30
+4,Provinsi Sumatera Selatan,2022,1
+5,Provinsi Sumatera Barat,2016,1
+5,Provinsi Sumatera Barat,2019,2
+6,Provinsi Jambi,2017,4
+6,Provinsi Jambi,2018,8
+6,Provinsi Jambi,2019,2
+6,Provinsi Jambi,2020,2
+6,Provinsi Jambi,2021,2
+6,Provinsi Jambi,2022,6
+7,Provinsi Kepulauan Riau,2021,2
+8,Provinsi Riau,2007,3
+8,Provinsi Riau,2008,4
+8,Provinsi Riau,2009,3
+8,Provinsi Riau,2012,13
+8,Provinsi Riau,2013,3
+8,Provinsi Riau,2014,3
+8,Provinsi Riau,2015,3
+8,Provinsi Riau,2016,1
+8,Provinsi Riau,2017,4
+8,Provinsi Riau,2018,3
+8,Provinsi Riau,2019,11
+8,Provinsi Riau,2020,13
+8,Provinsi Riau,2021,2
+8,Provinsi Riau,2022,3
+9,Provinsi Bengkulu,2011,1
+9,Provinsi Bengkulu,2012,2
+9,Provinsi Bengkulu,2013,4
+9,Provinsi Bengkulu,2016,3
+9,Provinsi Bengkulu,2017,7
+9,Provinsi Bengkulu,2018,5
+11,Provinsi DKI Jakarta,2005,1
+11,Provinsi DKI Jakarta,2006,3
+11,Provinsi DKI Jakarta,2008,1
+11,Provinsi DKI Jakarta,2009,1
+11,Provinsi DKI Jakarta,2010,4
+11,Provinsi DKI Jakarta,2011,5
+11,Provinsi DKI Jakarta,2012,2
+11,Provinsi DKI Jakarta,2013,11
+11,Provinsi DKI Jakarta,2016,21
+11,Provinsi DKI Jakarta,2017,5
+11,Provinsi DKI Jakarta,2018,5
+11,Provinsi DKI Jakarta,2019,2
+11,Provinsi DKI Jakarta,2021,8
+12,Provinsi Banten,2011,1
+12,Provinsi Banten,2012,1
+12,Provinsi Banten,2013,4
+12,Provinsi Banten,2014,5
+12,Provinsi Banten,2015,3
+12,Provinsi Banten,2017,6
+12,Provinsi Banten,2018,4
+12,Provinsi Banten,2021,3
+13,Provinsi Jawa Barat,2005,2
+13,Provinsi Jawa Barat,2007,1
+13,Provinsi Jawa Barat,2008,5
+13,Provinsi Jawa Barat,2009,3
+13,Provinsi Jawa Barat,2010,7
+13,Provinsi Jawa Barat,2011,4
+13,Provinsi Jawa Barat,2012,2
+13,Provinsi Jawa Barat,2013,12
+13,Provinsi Jawa Barat,2014,8
+13,Provinsi Jawa Barat,2016,7
+13,Provinsi Jawa Barat,2018,32
+13,Provinsi Jawa Barat,2019,18
+13,Provinsi Jawa Barat,2020,7
+13,Provinsi Jawa Barat,2021,8
+13,Provinsi Jawa Barat,2022,16
+14,Provinsi Jawa Tengah,2006,2
+14,Provinsi Jawa Tengah,2007,2
+14,Provinsi Jawa Tengah,2009,1
+14,Provinsi Jawa Tengah,2011,3
+14,Provinsi Jawa Tengah,2012,5
+14,Provinsi Jawa Tengah,2013,2
+14,Provinsi Jawa Tengah,2014,2
+14,Provinsi Jawa Tengah,2015,1
+14,Provinsi Jawa Tengah,2016,11
+14,Provinsi Jawa Tengah,2017,6
+14,Provinsi Jawa Tengah,2018,8
+14,Provinsi Jawa Tengah,2019,6
+14,Provinsi Jawa Tengah,2021,2
+14,Provinsi Jawa Tengah,2022,8
+15,Provinsi Jawa Timur,2008,2
+15,Provinsi Jawa Timur,2009,2
+15,Provinsi Jawa Timur,2011,1
+15,Provinsi Jawa Timur,2014,5
+15,Provinsi Jawa Timur,2015,2
+15,Provinsi Jawa Timur,2016,5
+15,Provinsi Jawa Timur,2017,29
+15,Provinsi Jawa Timur,2018,37
+15,Provinsi Jawa Timur,2019,2
+15,Provinsi Jawa Timur,2020,9
+15,Provinsi Jawa Timur,2021,10
+15,Provinsi Jawa Timur,2022,19
+16,Provinsi DI Yogyakarta,2020,3
+16,Provinsi DI Yogyakarta,2022,5
+17,Provinsi Bali,2014,2
+17,Provinsi Bali,2015,2
+17,Provinsi Bali,2017,1
+17,Provinsi Bali,2021,3
+18,Provinsi Lampung,2010,3
+18,Provinsi Lampung,2016,1
+18,Provinsi Lampung,2018,9
+18,Provinsi Lampung,2019,17
+18,Provinsi Lampung,2020,2
+18,Provinsi Lampung,2021,1
+18,Provinsi Lampung,2022,3
+19,Provinsi Kalimantan Selatan,2006,1
+19,Provinsi Kalimantan Selatan,2017,3
+19,Provinsi Kalimantan Selatan,2018,6
+19,Provinsi Kalimantan Selatan,2021,5
+19,Provinsi Kalimantan Selatan,2022,1
+20,Provinsi Kalimantan Tengah,2018,4
+20,Provinsi Kalimantan Tengah,2019,1
+21,Provinsi Kalimantan Barat,2019,10
+22,Provinsi Kalimantan Timur,2006,6
+22,Provinsi Kalimantan Timur,2007,3
+22,Provinsi Kalimantan Timur,2008,2
+22,Provinsi Kalimantan Timur,2017,6
+22,Provinsi Kalimantan Timur,2019,5
+22,Provinsi Kalimantan Timur,2020,6
+22,Provinsi Kalimantan Timur,2022,10
+24,Provinsi Sulawesi Utara,2008,1
+24,Provinsi Sulawesi Utara,2010,1
+24,Provinsi Sulawesi Utara,2011,2
+24,Provinsi Sulawesi Utara,2012,1
+24,Provinsi Sulawesi Utara,2017,2
+24,Provinsi Sulawesi Utara,2019,3
+24,Provinsi Sulawesi Utara,2020,1
+25,Provinsi Sulawesi Selatan,2007,1
+25,Provinsi Sulawesi Selatan,2014,2
+25,Provinsi Sulawesi Selatan,2015,2
+25,Provinsi Sulawesi Selatan,2021,3
+25,Provinsi Sulawesi Selatan,2022,2
+26,Provinsi Sulawesi Tengah,2012,4
+26,Provinsi Sulawesi Tengah,2013,1
+26,Provinsi Sulawesi Tengah,2020,6
+26,Provinsi Sulawesi Tengah,2022,3
+27,Provinsi Sulawesi Tenggara,2016,2
+27,Provinsi Sulawesi Tenggara,2017,1
+27,Provinsi Sulawesi Tenggara,2018,5
+27,Provinsi Sulawesi Tenggara,2021,5
+27,Provinsi Sulawesi Tenggara,2022,3
+29,Provinsi Maluku,2016,1
+29,Provinsi Maluku,2018,3
+29,Provinsi Maluku,2021,4
+29,Provinsi Maluku,2022,5
+30,Provinsi Maluku Utara,2018,2
+31,Provinsi Nusa Tenggara Barat,2006,1
+31,Provinsi Nusa Tenggara Barat,2008,2
+31,Provinsi Nusa Tenggara Barat,2013,2
+31,Provinsi Nusa Tenggara Barat,2014,2
+31,Provinsi Nusa Tenggara Barat,2016,2
+31,Provinsi Nusa Tenggara Barat,2019,3
+32,Provinsi Nusa Tenggara Timur,2014,2
+32,Provinsi Nusa Tenggara Timur,2016,1
+32,Provinsi Nusa Tenggara Timur,2018,2
+33,Provinsi Papua,2008,1
+33,Provinsi Papua,2009,2
+33,Provinsi Papua,2010,1
+33,Provinsi Papua,2014,4
+33,Provinsi Papua,2015,7
+33,Provinsi Papua,2017,2
+33,Provinsi Papua,2018,3
+33,Provinsi Papua,2019,2
+33,Provinsi Papua,2020,1
+33,Provinsi Papua,2022,7
+34,Provinsi Papua Barat,2022,2

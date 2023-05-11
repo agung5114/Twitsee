@@ -43,7 +43,7 @@ def main():
         #     st.empty()
         if submitted:
             raw_text = search_text
-            df = getTweets(raw_text,start,end,100)
+            df = getTweets(raw_text,start,end,20)
             col1,col2 = st.columns((1,1))
             with col1:
                 piefig = px.pie(df, names='sentiment', values='retweetCount', color='sentiment', hole=.4, color_discrete_map=sentiment_color)

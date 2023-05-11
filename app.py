@@ -23,8 +23,8 @@ start = end - timedelta(days = 31)
 end = end.strftime('%Y-%m-%d')
 start = start.strftime('%Y-%m-%d')
 sentiment_color = {"negative": "#e96678", "neutral": "#ced4d0", "positive": "#70bda0"}
-emotions_emoji = {"anger":"😡","disgust":"🤮", "fear":"😱", "happy":"🤗", "joy":"🤩", "neutral":"😐", "sad":"😔", "sadness":"😥", "shame":"😳", "surprise":"😮"}
-emotions_color = {"anger":"#e96678","disgust":"#e96678", "fear":"#e96678", "happy":"#70bda0", "joy":"#70bda0", "neutral":"#ced4d0", "sad":"#e96678", "sadness":"#e96678", "shame":"#e96678", "surprise":"#70bda0"}
+emotions_emoji = {"anger":"😡","disgust":"🤮", "fear":"😱", "happy":"🤗", "joy":"🤩", "love":"😍", "neutral":"😐", "sad":"😔", "sadness":"😥", "shame":"😳", "surprise":"😮"}
+emotions_color = {"anger":"#e96678","disgust":"#e96678", "fear":"#e96678", "happy":"#70bda0", "joy":"#70bda0","love":"#70bda0", "neutral":"#ced4d0", "sad":"#e96678", "sadness":"#e96678", "shame":"#e96678", "surprise":"#70bda0"}
             
 
 st.set_page_config(page_title="Twitsee", page_icon=None, layout="wide", initial_sidebar_state="auto", menu_items=None)
@@ -59,8 +59,16 @@ if choice == 'Analisis Sentimen':
         st.write("masukkan kata pencarian")
 elif choice == 'Analisis Pemerintah Daerah':
     st.subheader("Analisis Data historis")
-    dfh = pd.read_csv('twitdata.csv')
-    st.dataframe(dfh)
+    df = pd.read_csv('twitdata.csv')
+    c1,c2 = st.columns((1,1))
+    with c1:
+        piefig = px.pie(df, names='sentiment', values='retweetCount', color='sentiment', hole=.4, color_discrete_map=sentiment_color)
+        st.plotly_chart(piefig)
+    with c2:
+        df['emoji'] = [emotions_emoji[x] for x in df['emotion']]
+        barfig = px.bar(df, x='emoji', y='likeCount', color='emotion', color_discrete_map=emotions_color)
+        st.plotly_chart(barfig)
+    st.dataframe(df)
 elif choice == 'Monitoring Nasional':
     st.subheader("Sentiment-Emotion Prediction")
 

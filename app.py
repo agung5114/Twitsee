@@ -1,14 +1,15 @@
 import tweetnlp
 model_sentiment_indo = tweetnlp.load_model('sentiment', model_name="w11wo/indonesian-roberta-base-sentiment-classifier")
-import ray
-ray.init()
+# import ray
+# ray.init()
+# import modin.pandas as pd
 # sentence = "Wali Kota Bandung diindikasikan curang saat pemilu"
 # print(model_sentiment_indo.sentiment(sentence, return_probability=True))
 
 import streamlit as st
-import sys
-from streamlit.web import cli as stcli
-from streamlit import runtime
+# import sys
+# from streamlit.web import cli as stcli
+# from streamlit import runtime
 import plotly.express as px
 import plotly.graph_objects as go
 import pandas as pd
@@ -28,43 +29,45 @@ emotions_color = {"anger":"#e96678","disgust":"#e96678", "fear":"#e96678", "happ
 
 st.set_page_config(page_title="Twitsee", page_icon=None, layout="wide", initial_sidebar_state="auto", menu_items=None)
 
-def main():
-    menu = ['Analisis Pemerintah Daerah','Monitoring Nasional', 'Analisis Sentimen']
-    choice = st.sidebar.selectbox("Pilih Menu",menu)
+# def main():
+menu = ['Analisis Pemerintah Daerah','Monitoring Nasional', 'Analisis Sentimen']
+choice = st.sidebar.selectbox("Pilih Menu",menu)
 
-    if choice == 'Analisis Sentimen':
-        submitted = st.empty()
-        with st.sidebar.form(key='text'):
-            search_text = st.text_input("Pencarian Tweet terbaru")
-            submitted = st.form_submit_button('Submit')
-        st.subheader("Sentimen dan Emosi Publik Terkini")
-        # c1,c2 = st.columns((1,4))
-        # with c1:
-        # with c2:
-        #     st.empty()
-        if submitted:
-            raw_text = search_text
-            df = getTweets(raw_text,start,end,20)
-            col1,col2 = st.columns((1,1))
-            with col1:
-                piefig = px.pie(df, names='sentiment', values='retweetCount', color='sentiment', hole=.4, color_discrete_map=sentiment_color)
-                st.plotly_chart(piefig)
-            with col2:
-                df['emoji'] = [emotions_emoji[x] for x in df['emotion']]
-                barfig = px.bar(df, x='emoji', y='likeCount', color='emotion', color_discrete_map=emotions_color)
-                st.plotly_chart(barfig)
-            st.dataframe(df)
-        else:
-            st.write("masukkan kata pencarian")
-    if choice == 'Analisis Pemerintah Daerah':
-        st.subheader("Sentiment-Emotion Prediction")
-    if choice == 'Monitoring Nasional':
-        st.subheader("Sentiment-Emotion Prediction")
-
-if __name__=='__main__':
-    # if st._is_running_with_streamlit:
-    if runtime.exists():
-        main()   
+if choice == 'Analisis Sentimen':
+    submitted = st.empty()
+    with st.sidebar.form(key='text'):
+        search_text = st.text_input("Pencarian Tweet terbaru")
+        submitted = st.form_submit_button('Submit')
+    st.subheader("Sentimen dan Emosi Publik Terkini")
+    # c1,c2 = st.columns((1,4))
+    # with c1:
+    # with c2:
+    #     st.empty()
+    if submitted:
+        raw_text = search_text
+        df = getTweets(raw_text,start,end,100)
+        col1,col2 = st.columns((1,1))
+        with col1:
+            piefig = px.pie(df, names='sentiment', values='retweetCount', color='sentiment', hole=.4, color_discrete_map=sentiment_color)
+            st.plotly_chart(piefig)
+        with col2:
+            df['emoji'] = [emotions_emoji[x] for x in df['emotion']]
+            barfig = px.bar(df, x='emoji', y='likeCount', color='emotion', color_discrete_map=emotions_color)
+            st.plotly_chart(barfig)
+        st.dataframe(df)
     else:
-        sys.argv = ["streamlit", "run", sys.argv[0]]
-        sys.exit(stcli.main())
+        st.write("masukkan kata pencarian")
+elif choice == 'Analisis Pemerintah Daerah':
+    st.subheader("Analisis Data historis")
+    dfh = pd.read_csv('twitdata.csv')
+    st.dataframe(dfh)
+elif choice == 'Monitoring Nasional':
+    st.subheader("Sentiment-Emotion Prediction")
+
+# if __name__=='__main__':
+#     # if st._is_running_with_streamlit:
+#     if runtime.exists():
+#         main()   
+#     else:
+#         sys.argv = ["streamlit", "run", sys.argv[0]]
+#         sys.exit(stcli.main())

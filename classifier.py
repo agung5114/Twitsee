@@ -5,6 +5,7 @@ model_emosi_indo = tweetnlp.load_model('emotion',model_name= "StevenLimcorn/indo
 
 import re 
 
+
 def pre_process(text):
     # Remove links
     text = re.sub('http://\S+|https://\S+', '', text)

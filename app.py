@@ -1,6 +1,7 @@
 import tweetnlp
 model_sentiment_indo = tweetnlp.load_model('sentiment', model_name="w11wo/indonesian-roberta-base-sentiment-classifier")
-
+import ray
+ray.init()
 # sentence = "Wali Kota Bandung diindikasikan curang saat pemilu"
 # print(model_sentiment_indo.sentiment(sentence, return_probability=True))
 

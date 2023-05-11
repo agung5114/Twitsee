@@ -1,4 +1,5 @@
 tweetnlp
+altair
 streamlit==1.10.0
 plotly-express
 git+https://github.com/JustAnotherArchivist/snscrape.git

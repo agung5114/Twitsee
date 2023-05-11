@@ -1,12 +1,6 @@
-import tweetnlp
-model_sentiment_indo = tweetnlp.load_model('sentiment', model_name="w11wo/indonesian-roberta-base-sentiment-classifier")
-# import ray
-# ray.init()
-# import modin.pandas as pd
-# sentence = "Wali Kota Bandung diindikasikan curang saat pemilu"
-# print(model_sentiment_indo.sentiment(sentence, return_probability=True))
 
 import streamlit as st
+st.set_page_config(page_title="MAWS", page_icon=None, layout="wide", initial_sidebar_state="auto",menu_items=None)
 # import sys
 # from streamlit.web import cli as stcli
 # from streamlit import runtime
@@ -26,8 +20,6 @@ sentiment_color = {"negative": "#e96678", "neutral": "#ced4d0", "positive": "#70
 emotions_emoji = {"anger":"😡","disgust":"🤮", "fear":"😱", "happy":"🤗", "joy":"🤩", "love":"😍", "neutral":"😐", "sad":"😔", "sadness":"😥", "shame":"😳", "surprise":"😮"}
 emotions_color = {"anger":"#e96678","disgust":"#e96678", "fear":"#e96678", "happy":"#70bda0", "joy":"#70bda0","love":"#70bda0", "neutral":"#ced4d0", "sad":"#e96678", "sadness":"#e96678", "shame":"#e96678", "surprise":"#70bda0"}
             
-
-st.set_page_config(page_title="Twitsee", page_icon=None, layout="wide", initial_sidebar_state="auto", menu_items=None)
 
 # def main():
 menu = ['Analisis Pemerintah Daerah','Monitoring Nasional', 'Analisis Sentimen']
@@ -79,4 +71,3 @@ elif choice == 'Monitoring Nasional':
 #     else:
 #         sys.argv = ["streamlit", "run", sys.argv[0]]
 #         sys.exit(stcli.main())
-

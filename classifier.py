@@ -35,21 +35,21 @@ def predict_emotion(text):
     prediction = model_emosi_indo.emotion(text)
     return prediction['label']
 
-# def runNlp(df):
-#     df['text'] = df['rawContent'].apply(pre_process)
-#     # df['sentiment'] = df['Text'].apply(predict_sentiment)
-#     # df['emotion'] = df['Text'].apply(predict_emotion)
-#     return df
+def runNlp(df):
+    df['text'] = df['rawContent'].apply(pre_process)
+    # df['sentiment'] = df['text'].apply(predict_sentiment)
+    # df['emotion'] = df['text'].apply(predict_emotion)
+    return df
 
 # # text = 'saya marah sekali'
 # # prediction = model_emosi_indo.emotion(text)
 # # print(prediction['label'])
 # df = pd.read_csv('twitter_pemda.csv')
 # df = runNlp(df)
-# # print(df.tail())
-# emotions = []
-# for text in df['rawContent']:
-#     emotions.append(predict_emotion(text))
+# print(df.tail())
+# # emotions = []
+# # for text in df['rawContent']:
+# #     emotions.append(predict_emotion(text))
 
-# emotions[:10]
+# # emotions[:10]
 # df.to_csv('twitdata.csv', index=False)

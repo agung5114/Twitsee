@@ -11,7 +11,7 @@ def getTweets(keyword,start,end,n):
     keyword = keyword
     df = pd.DataFrame(itertools.islice(
             sntwitter.TwitterSearchScraper(
-            f'{keyword} lang:id since:{start} until:{end}')
+            f'{keyword} lang:id since:{start} until:{end}',maxEmptyPages=1000)
             .get_items(),n)
             )[['id','date', 'rawContent', 'user','mentionedUsers',
             'replyCount', 'retweetCount', 'likeCount','quoteCount','viewCount','place','hashtags']]

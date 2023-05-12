@@ -59,10 +59,8 @@ ausie = f'lang:en geocode:-25.165173,134.386371,2000km'
 indo = f'lang:id'
 # Singapore= lang:en near:"Singapore" within:50km
 
-tahun = 2023
-bulan = '03'
-start = f'{tahun}-{bulan}-01'
-end = f'{tahun}-{bulan}-31'
+
+
 
 # df = getTweets('motor listrik',start,end,10000,indo)
 # print(df.tail(10))

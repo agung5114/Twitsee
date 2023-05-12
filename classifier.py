@@ -5,6 +5,7 @@ model_emosi_indo = tweetnlp.load_model('emotion',model_name= "StevenLimcorn/indo
 
 import re 
 
+
 def pre_process(text):
     # Remove links
     text = re.sub('http://\S+|https://\S+', '', text)
@@ -37,19 +38,19 @@ def predict_emotion(text):
 
 def runNlp(df):
     df['text'] = df['rawContent'].apply(pre_process)
-    df['sentiment'] = df['text'].apply(predict_sentiment)
-    df['emotion'] = df['text'].apply(predict_emotion)
+    # df['sentiment'] = df['text'].apply(predict_sentiment)
+    # df['emotion'] = df['text'].apply(predict_emotion)
     return df
 
 # # text = 'saya marah sekali'
 # # prediction = model_emosi_indo.emotion(text)
 # # print(prediction['label'])
-df = pd.read_csv('twitter_pemda.csv')
-df = runNlp(df)
-print(df.tail())
-# emotions = []
-# for text in df['rawContent']:
-#     emotions.append(predict_emotion(text))
+# df = pd.read_csv('twitter_pemda.csv')
+# df = runNlp(df)
+# print(df.tail())
+# # emotions = []
+# # for text in df['rawContent']:
+# #     emotions.append(predict_emotion(text))
 
-# emotions[:10]
-df.to_csv('twitdata.csv', index=False)
+# # emotions[:10]
+# df.to_csv('twitdata.csv', index=False)

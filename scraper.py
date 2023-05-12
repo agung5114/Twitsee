@@ -2,7 +2,7 @@ import snscrape.modules.twitter as sntwitter
 import pandas as pd
 import itertools
 
-from classifier import pre_process,predict_emotion,predict_sentiment
+from classifier import pre_process, predict_emotion,predict_sentiment
 
 # def getUser(df,Col):
 #     col = df[Col].values
@@ -28,8 +28,9 @@ def getTweets(keyword,start,end,n):
     df['keyword'] = keywords
     # df['city'] = df['place'].str['city']
     # df['mentioned'] = df['mentionedUsers'].apply( lambda x: [d['username'] for d in x])
-    return df[['date','username','rawContent','sentiment','emotion','viewCount','replyCount', 'retweetCount', 'likeCount', 'quoteCount','followers','mentioned','hashtags']]
-#     # return df.explode('mentioned')
+    return df[['date','username','rawContent','emotion','sentiment','viewCount','replyCount', 'retweetCount', 'likeCount', 'quoteCount','followers','mentioned','hashtags']]
+#     # return df.explode('mentioned')'sentiment','emotion',
+
 
 
 #columnlist: ['url', 'date', 'rawContent', 'renderedContent', 'id', 'user',

@@ -165,20 +165,33 @@ elif choice == 'Analisis LHKPN':
             width=1440)
     
 elif choice == 'Smart Monitoring Program Daerah':
-    st.subheader("Pencarian Program Belanja Daerah dengan NLP")
-    from similar import getProgram, apbd
+    st.subheader("Pencarian Data Program Belanja Daerah")
+#     from similar import getProgram, apbd
     custom_search = st.expander(label='Pencarian Program Belanja Daerah ')
     with custom_search:
         keyw = st.text_input("Masukkan Kata Kunci")
+        out = keyw.split()
         if st.button("Jalankan"):
             st.write(f'Program Terkait dengan {keyw}:')
-            out = getProgram(keyw)
-            st.subheader(out)
-            df = apbd[apbd['Program'] == out]
+            # out = getProgram(keyw)
+            # st.subheader(out)
+            # df = apbd[apbd['Program'] == out]
+            apbd['key'] = apbd['Program'].str.contains('|'.join(out)).astype('int')
+            df = apbd[apbd['key'] == 1]
             c1,c2 = st.columns((1,3))
             with c1:
-                st.write("Total anggaran " + out + ": Rp" + str(round(df['Nilaianggaran'].sum()/1e9,2)) + " Miliar")
-                st.write("Porsi anggaran " + out + " terhadap total belanja: " + str(round(df['Nilaianggaran'].sum()/apbd['Nilaianggaran'].sum()*100,2)) + "%")
+                st.table(df['Program'].unique())
+                st.write("Total anggaran " + ": Rp" + str(round(df['Nilaianggaran'].sum()/1e9,2)) + " Miliar")
+                st.write("Porsi anggaran " + " terhadap total belanja: " + str(round(df['Nilaianggaran'].sum()/apbd['Nilaianggaran'].sum()*100,2)) + "%")
+#         if st.button("Jalankan"):
+#             st.write(f'Program Terkait dengan {keyw}:')
+#             out = getProgram(keyw)
+#             st.subheader(out)
+#             df = apbd[apbd['Program'] == out]
+#             c1,c2 = st.columns((1,3))
+#             with c1:
+#                 st.write("Total anggaran " + out + ": Rp" + str(round(df['Nilaianggaran'].sum()/1e9,2)) + " Miliar")
+#                 st.write("Porsi anggaran " + out + " terhadap total belanja: " + str(round(df['Nilaianggaran'].sum()/apbd['Nilaianggaran'].sum()*100,2)) + "%")
             with c2:
                 fig = px.bar(df, x="Provinsi", y="Nilaianggaran", color="Akun Analisis", barmode = 'stack')
                 st.plotly_chart(fig,use_container_width=True)

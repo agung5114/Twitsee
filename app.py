@@ -47,8 +47,10 @@ if choice == 'Sentimen Publik Terkini':
         df['emoji'] = [emotions_emoji[x]+x for x in df['emotion']]
         df['tanggal'] = pd.to_datetime(df['date']).dt.date
         df['count'] = 1
+        df['post'] = df['count']+df['retweetCount']
         st.subheader("Tren Sentiment Publik")
-        linefig = px.bar(df, x='tanggal', y='viewCount', color='sentiment', color_discrete_map=sentiment_color)
+        dfbar = df.groupby(['tanggal','sentiment'],as_index=False).agg({'post':'sum'})
+        linefig = px.bar(dfbar, x='tanggal', y='post', color='sentiment', color_discrete_map=sentiment_color)
         st.plotly_chart(linefig,use_container_width=True)
         col1,col2 = st.columns((1,1))
         with col1:

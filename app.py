@@ -188,7 +188,7 @@ elif choice == 'Smart Monitoring Program Daerah':
                 listpro = df['Program'].unique()
 #                 st.dataframe(df.groupby('Program').agg({'Nilaianggaran':'sum'}))
                 st.table(df.groupby('Program').agg({'Nilaianggaran':'sum'}))
-                st.table(listpro)
+#                 st.table(listpro)
                 st.write("Total anggaran " + ": Rp" + str(round(df['Nilaianggaran'].sum()/1e9,2)) + " Miliar")
                 st.write("Porsi anggaran " + " terhadap total belanja: " + str(round(df['Nilaianggaran'].sum()/apbd['Nilaianggaran'].sum()*100,2)) + "%")
             with c2:

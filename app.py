@@ -183,16 +183,18 @@ elif choice == 'Smart Monitoring Program Daerah':
             apbd['text'] = apbd['Program'].apply(pre_process)
             apbd['key'] = apbd['text'].str.contains('|'.join(out)).astype('int')
             df = apbd[apbd['key'] == 1]
-            c1,c2 = st.columns((1,2))
+            c1,c2 = st.columns((2,3))
             with c1:
                 listpro = df['Program'].unique()
-                st.dataframe(df.groupby('Program').agg({'Nilaianggaran':'sum'}))
+#                 st.dataframe(df.groupby('Program').agg({'Nilaianggaran':'sum'}))
                 # st.table(df['Program'].unique())
+                st.table(listpro)
                 st.write("Total anggaran " + ": Rp" + str(round(df['Nilaianggaran'].sum()/1e9,2)) + " Miliar")
                 st.write("Porsi anggaran " + " terhadap total belanja: " + str(round(df['Nilaianggaran'].sum()/apbd['Nilaianggaran'].sum()*100,2)) + "%")
             with c2:
                 fig = px.bar(df, x="Provinsi", y="Nilaianggaran", color="Akun Analisis", barmode = 'stack')
                 st.plotly_chart(fig,use_container_width=True)
+            st.dataframe(df.groupby(['Program','Akun Analisis','Provinsi']).agg({'Nilaianggaran':'sum'}))
 
 # if __name__=='__main__':
 #     # if st._is_running_with_streamlit:

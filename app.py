@@ -43,7 +43,7 @@ if choice == 'Sentimen Publik Terkini':
     #     st.empty()
     if submitted:
         raw_text = search_text
-        df = getTweets(raw_text,start,end,100)
+        df = getTweets(raw_text,start,end,50)
         df['emoji'] = [emotions_emoji[x]+x for x in df['emotion']]
         df['tanggal'] = pd.to_datetime(df['date']).dt.date
         df['count'] = 1

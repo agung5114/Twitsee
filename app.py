@@ -198,47 +198,48 @@ elif choice == 'Smart Monitoring Program Daerah':
             st.dataframe(df.groupby(['Program','Akun Analisis','Provinsi'],as_index=False).agg({'Nilaianggaran':'sum'}))
 
 elif choice == 'eChart':
-    from streamlit_echarts import st_echarts
-    from pyecharts import options as opts
-    from pyecharts.charts import Bar
-    from streamlit_echarts import st_pyecharts
-    from classifier import pre_process
+    st.write('test')
+    # from streamlit_echarts import st_echarts
+    # from pyecharts import options as opts
+    # from pyecharts.charts import Bar
+    # from streamlit_echarts import st_pyecharts
+    # from classifier import pre_process
 
-    apbd = pd.read_excel('Program APBD.xlsx')
-    custom_search = st.expander(label='Pencarian Program')
+    # apbd = pd.read_excel('Program APBD.xlsx')
+    # custom_search = st.expander(label='Pencarian Program')
 
-    c1,c2 = st.columns((1,1))
-    with c1:
-        options = {
-            "xAxis": {
-                "type": "category",
-                "data":apbd['Provinsi'].tolist()
-                # "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
-            },
-            "yAxis": {"type": "value"},
-            "series": [
-                {
-                    "data":apbd['Nilaianggaran'].tolist(),
-                    # "data": [820, 932, 901, 934, 1290, 1330, 1320], 
-                    "type": "line"}
-            ],
-        }
-        st_echarts(options=options)
-    with c2:
-        b = (
-            Bar()
-            .add_xaxis(apbd['Provinsi'].tolist())
-            .add_yaxis(
-                "Nilai Anggaran", apbd['Nilaianggaran'].tolist()
-            )
-            # .set_global_opts(
-            #     title_opts=opts.TitleOpts(
-            #         title="Nilai Anggaran", subtitle="Tahun 2023"
-            #     ),
-            #     toolbox_opts=opts.ToolboxOpts(),
-            # )
-        )
-        st_pyecharts(b)
+    # c1,c2 = st.columns((1,1))
+    # with c1:
+    #     options = {
+    #         "xAxis": {
+    #             "type": "category",
+    #             "data":apbd['Provinsi'].tolist()
+    #             # "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    #         },
+    #         "yAxis": {"type": "value"},
+    #         "series": [
+    #             {
+    #                 "data":apbd['Nilaianggaran'].tolist(),
+    #                 # "data": [820, 932, 901, 934, 1290, 1330, 1320], 
+    #                 "type": "line"}
+    #         ],
+    #     }
+    #     st_echarts(options=options)
+    # with c2:
+    #     b = (
+    #         Bar()
+    #         .add_xaxis(apbd['Provinsi'].tolist())
+    #         .add_yaxis(
+    #             "Nilai Anggaran", apbd['Nilaianggaran'].tolist()
+    #         )
+    #         # .set_global_opts(
+    #         #     title_opts=opts.TitleOpts(
+    #         #         title="Nilai Anggaran", subtitle="Tahun 2023"
+    #         #     ),
+    #         #     toolbox_opts=opts.ToolboxOpts(),
+    #         # )
+    #     )
+    #     st_pyecharts(b)
 
 elif choice == 'Peta':
     st.subheader('Luminousity Maps')

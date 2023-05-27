@@ -11,7 +11,7 @@ def getTweets(keyword,start,end,n):
     keyword = keyword
     df = pd.DataFrame(itertools.islice(
             sntwitter.TwitterSearchScraper(
-            f'{keyword} lang:id since:{start} until:{end}',maxEmptyPages=1000)
+            f'{keyword} lang:id since:{start} until:{end}',maxEmptyPages=100)
             .get_items(),n)
             )[['id','date', 'rawContent', 'user','mentionedUsers',
             'replyCount', 'retweetCount', 'likeCount','quoteCount','viewCount','place','hashtags']]
@@ -39,14 +39,4 @@ def getTweets(keyword,start,end,n):
     #    'media', 'retweetedTweet', 'quotedTweet', 'inReplyToTweetId',
     #    'inReplyToUser', 'mentionedUsers', 'coordinates', 'place', 'hashtags',
     #    'cashtags', 'card',  'vibe']
-ausie = f'lang:en geocode:-25.165173,134.386371,2000km'
-indo = f'lang:id'
-# keys = f'(motor listrik) OR (mobil listrik) OR (kendaraan listrik)'
-keys = f'(electric car) OR (electric vehicle)'
-tahun = 2023
-bulan = '05'
-start = f'{tahun}-{bulan}-01'
-end = f'{tahun}-{bulan}-12'
 
-df = getTweets(keys, start,end,10000,ausie)
-df.to_csv(f'EVAus-{tahun}{bulan}.csv')

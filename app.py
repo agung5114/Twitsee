@@ -24,11 +24,12 @@ emotions_color = {"😡anger":"#de425b","🤮disgust":"#df676e", "😱fear":"#e8
 from PIL import Image
 # def main():
 ##TOP PAGE
-st.title("Media Analytics Warning Systems of Money Politics")
-st.write("Toward Clean & Accountable Local Government")
+# st.title("Media Analytics Warning Systems of Money Politics")
+# st.write("Toward Clean & Accountable Local Government")
+st.image(Image.open('maws-banner.png'))
 st.markdown('<style>h1{color:dark-grey;font-size:62px}</style>',unsafe_allow_html=True)
-st.sidebar.image(Image.open('MAWSMP.png'))
-menu = ['Monitoring Nasional','Analisis Risiko Pemerintah Daerah','Tren & Histori Sentimen Publik', 'Sentimen Publik Terkini','Analisis LHKPN','Smart Monitoring Program Daerah']
+st.sidebar.image(Image.open('maws-menu.png'))
+menu = ['eChart','Peta','Monitoring Nasional','Analisis Risiko Pemerintah Daerah','Tren & Histori Sentimen Publik', 'Sentimen Publik Terkini','Analisis LHKPN','Smart Monitoring Program Daerah']
 choice = st.sidebar.selectbox("Pilih Menu",menu)
 
 if choice == 'Sentimen Publik Terkini':
@@ -196,6 +197,119 @@ elif choice == 'Smart Monitoring Program Daerah':
                 st.plotly_chart(fig,use_container_width=True)
             st.dataframe(df.groupby(['Program','Akun Analisis','Provinsi'],as_index=False).agg({'Nilaianggaran':'sum'}))
 
+elif choice == 'eChart':
+    from streamlit_echarts import st_echarts
+    from pyecharts import options as opts
+    from pyecharts.charts import Bar
+    from streamlit_echarts import st_pyecharts
+    from classifier import pre_process
+
+    apbd = pd.read_excel('Program APBD.xlsx')
+    custom_search = st.expander(label='Pencarian Program')
+
+    c1,c2 = st.columns((1,1))
+    with c1:
+        options = {
+            "xAxis": {
+                "type": "category",
+                "data":apbd['Provinsi'].tolist()
+                # "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+            },
+            "yAxis": {"type": "value"},
+            "series": [
+                {
+                    "data":apbd['Nilaianggaran'].tolist(),
+                    # "data": [820, 932, 901, 934, 1290, 1330, 1320], 
+                    "type": "line"}
+            ],
+        }
+        st_echarts(options=options)
+    with c2:
+        b = (
+            Bar()
+            .add_xaxis(apbd['Provinsi'].tolist())
+            .add_yaxis(
+                "Nilai Anggaran", apbd['Nilaianggaran'].tolist()
+            )
+            # .set_global_opts(
+            #     title_opts=opts.TitleOpts(
+            #         title="Nilai Anggaran", subtitle="Tahun 2023"
+            #     ),
+            #     toolbox_opts=opts.ToolboxOpts(),
+            # )
+        )
+        st_pyecharts(b)
+
+elif choice == 'Peta':
+    st.subheader('Luminousity Maps')
+    import streamlit.components.v1 as components
+    c1,c2 = st.columns((1,1))
+    with c1:
+        st.subheader("Tahun 2018")
+        components.html('''
+            <iframe
+                id="2018map"
+                src="https://www.lightpollutionmap.info/#zoom=7.46&lat=-4.9287&lon=105.2753&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMTgiLCJvdmVybGF5Y29sb3IiOnRydWUsIm92ZXJsYXlvcGFjaXR5Ijo2OSwiZmVhdHVyZXMiOlsiU1FNIiwiU1FNTCJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ=="
+                frameborder="20"
+                width="850"
+                height="700"
+            ></iframe>
+            <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.4/js/iframeResizer.min.js"></script>
+            <script>
+            iFrameResize({}, "#2018map")
+            </script>
+            ''',height=720,
+                width=880)
+    with c2:
+        st.subheader("Tahun 2022")
+        components.html('''
+            <iframe
+                id="2022map"
+                src="https://www.lightpollutionmap.info/#zoom=7.46&lat=-4.9287&lon=105.2753&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMjIiLCJvdmVybGF5Y29sb3IiOnRydWUsIm92ZXJsYXlvcGFjaXR5Ijo2OSwiZmVhdHVyZXMiOlsiU1FNIiwiU1FNTCJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ=="
+                frameborder="20"
+                width="850"
+                height="700"
+            ></iframe>
+            <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.4/js/iframeResizer.min.js"></script>
+            <script>
+            iFrameResize({}, "#2022map")
+            </script>
+            ''',height=720,
+                width=880)
+
+    lumcal = st.expander(label='Perhitungan Index Luminousity')
+    with lumcal:
+        def calc_brightness(image):
+                greyscale_image = image.convert('L')
+                histogram = greyscale_image.histogram()
+                pixels = sum(histogram)
+                brightness = scale = len(histogram)
+
+                for index in range(0, scale):
+                    ratio = histogram[index] / pixels
+                    brightness += ratio * (-scale + index)
+
+                return 1 if brightness == 255 else brightness / scale
+        k1,k2 = st.columns((1,1))
+        with k1:
+            img = st.file_uploader(label='Upload map image 1',type=['png', 'jpg'])
+            if img is not None:
+                st.image(Image.open(img))
+                lum = calc_brightness(Image.open(img))
+                st.subheader(f'Luminousity index: {lum:.3f}')
+            else:
+                st.write("No image uploaded")
+        with k2:
+            img2 = st.file_uploader(label='Upload map image 2',type=['png', 'jpg'])
+            if img2 is not None:
+                st.image(Image.open(img2))
+                lum2 = calc_brightness(Image.open(img2))
+                st.subheader(f'Luminousity index: {lum2:.3f}')
+            else:
+                st.write("No image uploaded")
+        if img is not None and img2 is not None:
+            st.subheader(f'Tingkat perubahan:{(lum2-lum):.3f}')
+            st.subheader(f'Persentase perubahan:{((lum2-lum)/lum):.3%}')
 # if __name__=='__main__':
 #     # if st._is_running_with_streamlit:
 #     if runtime.exists():

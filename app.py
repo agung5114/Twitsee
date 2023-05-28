@@ -30,6 +30,7 @@ st.image(Image.open('maws-banner.png'))
 st.markdown('<style>h1{color:dark-grey;font-size:62px}</style>',unsafe_allow_html=True)
 st.sidebar.image(Image.open('maws-menu.png'))
 menu = ['Peta','Monitoring Nasional','Analisis Risiko Pemerintah Daerah','Tren & Histori Sentimen Publik', 'Sentimen Publik Terkini','Analisis LHKPN','Smart Monitoring Program Daerah']
+menu = ['Peta','Monitoring Nasional','Analisis Risiko Pemerintah Daerah','Tren & Histori Sentimen Publik', 'Sentimen Publik Terkini','Analisis LHKPN','Smart Monitoring Program Daerah']
 choice = st.sidebar.selectbox("Pilih Menu",menu)
 
 if choice == 'Sentimen Publik Terkini':
@@ -199,6 +200,8 @@ elif choice == 'Smart Monitoring Program Daerah':
 
 # elif choice == 'eChart':
 #     st.write('test')
+# elif choice == 'eChart':
+#     st.write('test')
 
 elif choice == 'Peta':
     st.subheader('Luminousity Maps')
@@ -234,11 +237,14 @@ elif choice == 'Peta':
     components.html(htmlindo,height=680,width=1600)
     st.subheader('Perkembangan Index Luminousity Pemda')
     # dflok = pd.read_csv('latlon.csv')
+    # dflok = pd.read_csv('latlon.csv')
     # st.dataframe(dflok)
     # pemdas = dflok['city'].unique().tolist()
     dflok = pd.read_csv('latlong_pemda.csv')
     pemdas = dflok['pemda'].tolist()
     latlon = st.selectbox(label='Pilih Pemda',options=pemdas)
+    pemdalok = dflok[dflok['pemda']==latlon]
+    # pemdalok = dflok[dflok['city']==latlon]
     pemdalok = dflok[dflok['pemda']==latlon]
     # pemdalok = dflok[dflok['city']==latlon]
     tombol = st.button('Jalankan')
@@ -271,6 +277,16 @@ elif choice == 'Peta':
                 iFrameResize({}, "#2018map")
                 </script>
                 '''
+            comp1 = components.html(html1,height=720,
+                    width=880)
+#             if link1 is not None:
+#                     hti1 = Html2Image(output_path='./static/')
+#                     name = f'2018-{latlon}.png'
+#                     hti1.screenshot(html_str=html1,size=(880,720),save_as=name)
+#                     img1 = Image.open(f'./static/{name}')
+#                     # st.image(img1)
+#                     lum = calc_brightness(img1)
+#                     st.subheader(f'Luminousity index: {lum:.3f}')
             comp1 = components.html(html1,height=720,
                     width=880)
 #             if link1 is not None:
@@ -316,7 +332,23 @@ elif choice == 'Peta':
 #                     lum2 = calc_brightness(img2)
 #                     st.subheader(f'Luminousity index: {lum2:.3f}')
                     # li2022.append(lum2)
+            comp2 = components.html(html2,height=720,
+                    width=880)
+#             if link2 is not None:
+#                     hti2 = Html2Image(output_path='./static/')
+#                     name2 = f'2022-{latlon}.png'
+#                     hti1.screenshot(html_str=html1,size=(880,720),save_as=name2)
+#                     img2 = Image.open(f'./static/{name2}')
+#                     # st.image(img2)
+#                     lum2 = calc_brightness(img2)
+#                     st.subheader(f'Luminousity index: {lum2:.3f}')
+                    # li2022.append(lum2)
         
+#         if img1 is not None and img2 is not None:
+#             st.subheader(f'Tingkat perubahan:{(lum2-lum):.3f}')
+#             st.subheader(f'Persentase perubahan:{((lum2-lum)/lum):.3%}')
+#         else:
+#             st.empty()
 #         if img1 is not None and img2 is not None:
 #             st.subheader(f'Tingkat perubahan:{(lum2-lum):.3f}')
 #             st.subheader(f'Persentase perubahan:{((lum2-lum)/lum):.3%}')

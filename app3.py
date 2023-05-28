@@ -329,7 +329,7 @@ elif choice == 'Peta':
         # dflok['2018'] = li2018
         dfli = pd.read_csv('datali.csv')
         dfli['2018'] = li2018
-        dfli['2022'] = li2022 
+        dfli['2022'] = li2022
         dfli.to_csv('datali.csv',index=False)
         st.dataframe(dfli)
         

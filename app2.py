@@ -199,173 +199,118 @@ elif choice == 'Smart Monitoring Program Daerah':
 
 elif choice == 'eChart':
     st.write('test')
+    # from streamlit_echarts import st_echarts
+    # from pyecharts import options as opts
+    # from pyecharts.charts import Bar
+    # from streamlit_echarts import st_pyecharts
+    # from classifier import pre_process
+
+    # apbd = pd.read_excel('Program APBD.xlsx')
+    # custom_search = st.expander(label='Pencarian Program')
+
+    # c1,c2 = st.columns((1,1))
+    # with c1:
+    #     options = {
+    #         "xAxis": {
+    #             "type": "category",
+    #             "data":apbd['Provinsi'].tolist()
+    #             # "data": ["Mon", "Tue", "Wed", "Thu", "Fri", "Sat", "Sun"],
+    #         },
+    #         "yAxis": {"type": "value"},
+    #         "series": [
+    #             {
+    #                 "data":apbd['Nilaianggaran'].tolist(),
+    #                 # "data": [820, 932, 901, 934, 1290, 1330, 1320], 
+    #                 "type": "line"}
+    #         ],
+    #     }
+    #     st_echarts(options=options)
+    # with c2:
+    #     b = (
+    #         Bar()
+    #         .add_xaxis(apbd['Provinsi'].tolist())
+    #         .add_yaxis(
+    #             "Nilai Anggaran", apbd['Nilaianggaran'].tolist()
+    #         )
+    #         # .set_global_opts(
+    #         #     title_opts=opts.TitleOpts(
+    #         #         title="Nilai Anggaran", subtitle="Tahun 2023"
+    #         #     ),
+    #         #     toolbox_opts=opts.ToolboxOpts(),
+    #         # )
+    #     )
+    #     st_pyecharts(b)
 
 elif choice == 'Peta':
     st.subheader('Luminousity Maps')
     import streamlit.components.v1 as components
-    def calc_brightness(image):
-            greyscale_image = image.convert('L')
-            histogram = greyscale_image.histogram()
-            pixels = sum(histogram)
-            brightness = scale = len(histogram)
-            for index in range(0, scale):
-                ratio = histogram[index] / pixels
-                brightness += ratio * (-scale + index)
-            return 1 if brightness == 255 else brightness / scale
-    
-    from html2image import Html2Image
-    htmlindo= '''
-            <style>
-                .iframe-container { overflow: hidden;margin-top: -50px;}
-            </style>
+    c1,c2 = st.columns((1,1))
+    with c1:
+        st.subheader("Tahun 2018")
+        components.html('''
             <iframe
-                id="2021indo"
-                class="iframe-container"
-                src=https://www.lightpollutionmap.info/#zoom=4.59&lat=-2.9756&lon=115.2515&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMjEiLCJvdmVybGF5Y29sb3IiOmZhbHNlLCJvdmVybGF5b3BhY2l0eSI6NjUsImZlYXR1cmVzIjpbIlNRQyJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ==
+                id="2018map"
+                src="https://www.lightpollutionmap.info/#zoom=7.46&lat=-4.9287&lon=105.2753&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMTgiLCJvdmVybGF5Y29sb3IiOnRydWUsIm92ZXJsYXlvcGFjaXR5Ijo2OSwiZmVhdHVyZXMiOlsiU1FNIiwiU1FNTCJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ=="
                 frameborder="20"
-                width="1560"
-                height="880"
+                width="850"
+                height="700"
             ></iframe>
             <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.4/js/iframeResizer.min.js"></script>
             <script>
-            iFrameResize({}, "#2021indo")
+            iFrameResize({}, "#2018map")
             </script>
-            '''
-    components.html(htmlindo,height=680,width=1600)
-    st.subheader('Perkembangan Index Luminousity Pemda')
-    dflok = pd.read_csv('latlon.csv')
-    # st.dataframe(dflok)
-    pemdas = dflok['city'].unique().tolist()
-    latlon = st.selectbox(label='Pilih Pemda',options=pemdas)
-    pemdalok = dflok[dflok['city']==latlon]
-    tombol = st.button('Jalankan')
-    if tombol:
-        lat = pemdalok['lat'].tolist()[0]
-        lon = pemdalok['lon'].tolist()[0]
-        st.write(f'Latitude:{lat} , Longitude:{lon}')
-        # lat='-6.1750'
-        # lon='106.8275'
-        c1,c2 = st.columns((1,1))
-        with c1:
-            st.subheader("Tahun 2018")
-            # position: relative;
-            link1 = f"https://www.lightpollutionmap.info/#zoom=10&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nUm9hZCIsIm92ZXJsYXkiOiJ2aWlyc18yMDE4Iiwib3ZlcmxheWNvbG9yIjp0cnVlLCJvdmVybGF5b3BhY2l0eSI6NjAsImZlYXR1cmVzb3BhY2l0eSI6ODV9"
-            # link1 = f"https://www.lightpollutionmap.info/#zoom=10&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMTgiLCJvdmVybGF5Y29sb3IiOnRydWUsIm92ZXJsYXlvcGFjaXR5Ijo2OSwiZmVhdHVyZXMiOlsiU1FNIiwiU1FNTCJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ=="
-            html1= '''
-                <style>
-                    .iframe-container { overflow: hidden;margin-top: -50px;}
-                </style>
-                <iframe
-                    id="2018map"
-                    class="iframe-container"
-                    src='''+link1+'''
-                    frameborder="20"
-                    width="860"
-                    height="720"
-                ></iframe>
-                <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.4/js/iframeResizer.min.js"></script>
-                <script>
-                iFrameResize({}, "#2018map")
-                </script>
-                '''
-            # comp1 = components.html(html1,height=720,
-            #         width=880)
-            if link1 is not None:
-                    hti1 = Html2Image()
-                    hti1.screenshot(html_str=html1,size=(880,720),save_as='page1.png')
-                    img1 = Image.open('page1.png')
-                    st.image(img1)
-                    lum = calc_brightness(img1)
-                    st.subheader(f'Luminousity index: {lum:.3f}')
-        with c2:
-            st.subheader("Tahun 2022")
-            link2 = f"https://www.lightpollutionmap.info/#zoom=10&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nUm9hZCIsIm92ZXJsYXkiOiJ2aWlyc18yMDIyIiwib3ZlcmxheWNvbG9yIjp0cnVlLCJvdmVybGF5b3BhY2l0eSI6NjAsImZlYXR1cmVzb3BhY2l0eSI6ODV9"
-            # link2 = f"https://www.lightpollutionmap.info/#zoom=10&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMjIiLCJvdmVybGF5Y29sb3IiOnRydWUsIm92ZXJsYXlvcGFjaXR5Ijo2OSwiZmVhdHVyZXMiOlsiU1FNIiwiU1FNTCJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ=="
-            html2 ='''
-                <style>
-                    .iframe-container {
-                        overflow: hidden;
-                        margin-top: -50px;
-                    }
-                </style>
-                <iframe
-                    id="2022map"
-                    class="iframe-container"
-                    src='''+link2+'''
-                    frameborder="20"
-                    width="860"
-                    height="720"
-                ></iframe>
-                <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.4/js/iframeResizer.min.js"></script>
-                <script>
-                iFrameResize({}, "#2022map")
-                </script>
-                '''
-            # comp2 = components.html(html2,height=720,
-            #         width=880)
-            if link2 is not None:
-                    hti2 = Html2Image()
-                    hti2.screenshot(html_str=html2,size=(880,720),save_as='page2.png')
-                    img2 = Image.open('page2.png')
-                    st.image(img2)
-                    lum2 = calc_brightness(img2)
-                    st.subheader(f'Luminousity index: {lum2:.3f}')
-        
-        if img1 is not None and img2 is not None:
-            st.subheader(f'Tingkat perubahan:{(lum2-lum):.3f}')
-            st.subheader(f'Persentase perubahan:{((lum2-lum)/lum):.3%}')
-        else:
-            st.empty()
-        
-    lumcal2 = st.expander(label='Perhitungan Index Luminousity')
-    with lumcal2:
+            ''',height=720,
+                width=880)
+    with c2:
+        st.subheader("Tahun 2022")
+        components.html('''
+            <iframe
+                id="2022map"
+                src="https://www.lightpollutionmap.info/#zoom=7.46&lat=-4.9287&lon=105.2753&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMjIiLCJvdmVybGF5Y29sb3IiOnRydWUsIm92ZXJsYXlvcGFjaXR5Ijo2OSwiZmVhdHVyZXMiOlsiU1FNIiwiU1FNTCJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ=="
+                frameborder="20"
+                width="850"
+                height="700"
+            ></iframe>
+            <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.4/js/iframeResizer.min.js"></script>
+            <script>
+            iFrameResize({}, "#2022map")
+            </script>
+            ''',height=720,
+                width=880)
+
+    lumcal = st.expander(label='Perhitungan Index Luminousity')
+    with lumcal:
+        def calc_brightness(image):
+                greyscale_image = image.convert('L')
+                histogram = greyscale_image.histogram()
+                pixels = sum(histogram)
+                brightness = scale = len(histogram)
+
+                for index in range(0, scale):
+                    ratio = histogram[index] / pixels
+                    brightness += ratio * (-scale + index)
+
+                return 1 if brightness == 255 else brightness / scale
         k1,k2 = st.columns((1,1))
         with k1:
-            img3 = st.file_uploader(label='Upload map image 1',type=['png', 'jpg'])
-            if img3 is not None:
-                st.image(Image.open(img3))
-                lum = calc_brightness(Image.open(img3))
+            img = st.file_uploader(label='Upload map image 1',type=['png', 'jpg'])
+            if img is not None:
+                st.image(Image.open(img))
+                lum = calc_brightness(Image.open(img))
                 st.subheader(f'Luminousity index: {lum:.3f}')
             else:
                 st.write("No image uploaded")
         with k2:
-            img4 = st.file_uploader(label='Upload map image 2',type=['png', 'jpg'])
-            if img4 is not None:
-                st.image(Image.open(img4))
-                lum2 = calc_brightness(Image.open(img4))
+            img2 = st.file_uploader(label='Upload map image 2',type=['png', 'jpg'])
+            if img2 is not None:
+                st.image(Image.open(img2))
+                lum2 = calc_brightness(Image.open(img2))
                 st.subheader(f'Luminousity index: {lum2:.3f}')
             else:
                 st.write("No image uploaded")
-        if img3 is not None and img4 is not None:
+        if img is not None and img2 is not None:
             st.subheader(f'Tingkat perubahan:{(lum2-lum):.3f}')
             st.subheader(f'Persentase perubahan:{((lum2-lum)/lum):.3%}')
-        else:
-            st.empty()
-    
-    
-
-    # lumcal = st.expander(label='Perhitungan Index Luminousity')
-    # with lumcal:
-    #     k1,k2 = st.columns((1,1))
-    #     with k1:
-    #         img = st.file_uploader(label='Upload map image 1',type=['png', 'jpg'])
-    #         if img is not None:
-    #             st.image(Image.open(img))
-    #             lum = calc_brightness(Image.open(img))
-    #             st.subheader(f'Luminousity index: {lum:.3f}')
-    #         else:
-    #             st.write("No image uploaded")
-    #     with k2:
-    #         img2 = st.file_uploader(label='Upload map image 2',type=['png', 'jpg'])
-    #         if img2 is not None:
-    #             st.image(Image.open(img2))
-    #             lum2 = calc_brightness(Image.open(img2))
-    #             st.subheader(f'Luminousity index: {lum2:.3f}')
-    #         else:
-    #             st.write("No image uploaded")
-    #     if img is not None and img2 is not None:
-    #         st.subheader(f'Tingkat perubahan:{(lum2-lum):.3f}')
-    #         st.subheader(f'Persentase perubahan:{((lum2-lum)/lum):.3%}')
 # if __name__=='__main__':
 #     # if st._is_running_with_streamlit:
 #     if runtime.exists():

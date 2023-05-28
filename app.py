@@ -271,8 +271,8 @@ elif choice == 'Peta':
                 iFrameResize({}, "#2018map")
                 </script>
                 '''
-            # comp1 = components.html(html1,height=720,
-            #         width=880)
+            comp1 = components.html(html1,height=720,
+                    width=880)
             if link1 is not None:
                     hti1 = Html2Image(output_path='./static/')
                     name = f'2018-{latlon}.png'
@@ -305,8 +305,8 @@ elif choice == 'Peta':
                 iFrameResize({}, "#2022map")
                 </script>
                 '''
-            # comp2 = components.html(html2,height=720,
-            #         width=880)
+            comp2 = components.html(html2,height=720,
+                    width=880)
             if link2 is not None:
                     hti2 = Html2Image(output_path='./static/')
                     name2 = f'2022-{latlon}.png'

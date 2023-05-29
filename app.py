@@ -398,23 +398,23 @@ elif choice == 'Peta':
                         mode = "number+delta",
                         # value = status*100,
                         value = int(lum3*100000)/100000,
-                        title = {"text": "Index 2018:"},
-                        delta = {'reference': int(lum*100000)/100000, 'relative': False},
+                        title = {"text": "Index 1:"},
+                        delta = {'reference': int(lum3*100000)/100000, 'relative': False},
                         domain = {'row': 0, 'column': 0},
                         ))
             fig4.add_trace(go.Indicator(
                             mode = "number+delta",
                             # value = status*100,
                             value = int(lum4*100000)/100000,
-                            title = {"text": "Index 2022:"},
-                            delta = {'reference': int(lum4*100000)/100000, 'relative': False},
+                            title = {"text": "Index 2:"},
+                            delta = {'reference': int(lum3*100000)/100000, 'relative': False},
                             domain = {'row': 0, 'column': 1},
                             ))
             fig4.add_trace(go.Indicator(
                             mode = "delta",
                             # value = status*100,
                             value = int((1+growth4)*100000)/1000,
-                            title = {"text": "Tingkat Perubahan (%):"},
+                            title = {"text": "Tingkat Perbedaan (%):"},
                             delta = {'reference': int(100), 'relative': False},
                             domain = {'row': 0, 'column': 2},
                             ))

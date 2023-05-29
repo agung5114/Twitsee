@@ -206,6 +206,7 @@ elif choice == 'Smart Monitoring Program Daerah':
 elif choice == 'Peta':
     st.subheader('Luminousity Maps')
     import streamlit.components.v1 as components
+    # from html2image import Html2Image
     def calc_brightness(image):
             greyscale_image = image.convert('L')
             histogram = greyscale_image.histogram()
@@ -215,9 +216,32 @@ elif choice == 'Peta':
                 ratio = histogram[index] / pixels
                 brightness += ratio * (-scale + index)
             return 1 if brightness == 255 else brightness / scale
-    
-    from html2image import Html2Image
-    htmlindo= '''
+
+    st.subheader('Perkembangan Index Luminousity Pemda')
+    # dflok = pd.read_csv('latlon.csv')
+    # dflok = pd.read_csv('latlon.csv')
+    # st.dataframe(dflok)
+    # pemdas = dflok['city'].unique().tolist()
+    dflok = pd.read_csv('latlong_all.csv')
+    pemdas = dflok['pemda'].tolist()
+    latlon = st.selectbox(label='Pilih Pemda',options=pemdas, key='All')
+    pemdalok = dflok[dflok['pemda']==latlon]
+    # tombol = st.button('Jalankan')
+    # if tombol:
+    lat = pemdalok['lat'].tolist()[0]
+    lon = pemdalok['lon'].tolist()[0]
+    zoom = pemdalok['zoom'].tolist()[0]
+    st.write(f'Latitude:{lat} , Longitude:{lon}')
+    # lat='-6.1750'
+    # lon='106.8275'
+    lum = pemdalok['2018'].tolist()[0]
+    lum2 = pemdalok['2022'].tolist()[0]
+    # st.subheader(f'Tingkat perubahan:{(lum2-lum):.4f}')
+    gap = lum2-lum
+    growth = gap/lum
+    # st.subheader(f'Persentase perubahan:{growth:.2%}')
+    if latlon == 'All':
+        htmlindo= '''
             <style>
                 .iframe-container { overflow: hidden;margin-top: -50px;}
             </style>
@@ -226,39 +250,48 @@ elif choice == 'Peta':
                 class="iframe-container"
                 src=https://www.lightpollutionmap.info/#zoom=4.59&lat=-2.9756&lon=115.2515&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMjEiLCJvdmVybGF5Y29sb3IiOmZhbHNlLCJvdmVybGF5b3BhY2l0eSI6NjUsImZlYXR1cmVzIjpbIlNRQyJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ==
                 frameborder="20"
-                width="1560"
-                height="880"
+                width="1600"
+                height="720"
             ></iframe>
             <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.4/js/iframeResizer.min.js"></script>
             <script>
             iFrameResize({}, "#2021indo")
             </script>
             '''
-    components.html(htmlindo,height=680,width=1600)
-    st.subheader('Perkembangan Index Luminousity Pemda')
-    # dflok = pd.read_csv('latlon.csv')
-    # dflok = pd.read_csv('latlon.csv')
-    # st.dataframe(dflok)
-    # pemdas = dflok['city'].unique().tolist()
-    dflok = pd.read_csv('latlong_pemda.csv')
-    pemdas = dflok['pemda'].tolist()
-    latlon = st.selectbox(label='Pilih Pemda',options=pemdas)
-    pemdalok = dflok[dflok['pemda']==latlon]
-    # pemdalok = dflok[dflok['city']==latlon]
-    pemdalok = dflok[dflok['pemda']==latlon]
-    # pemdalok = dflok[dflok['city']==latlon]
-    tombol = st.button('Jalankan')
-    if tombol:
-        lat = pemdalok['lat'].tolist()[0]
-        lon = pemdalok['lon'].tolist()[0]
-        st.write(f'Latitude:{lat} , Longitude:{lon}')
-        # lat='-6.1750'
-        # lon='106.8275'
+        components.html(htmlindo,height=730,width=1620)
+        fig0 = go.Figure()
+        fig0.add_trace(go.Indicator(
+                        mode = "number+delta",
+                        # value = status*100,
+                        value = int(lum*100000)/100000,
+                        title = {"text": "Index 2018:"},
+                        delta = {'reference': int(lum*100000)/100000, 'relative': False},
+                        domain = {'row': 0, 'column': 0},
+                        ))
+        fig0.add_trace(go.Indicator(
+                        mode = "number+delta",
+                        # value = status*100,
+                        value = int(lum2*100000)/100000,
+                        title = {"text": "Index 2022:"},
+                        delta = {'reference': int(lum*100000)/100000, 'relative': False},
+                        domain = {'row': 0, 'column': 1},
+                        ))
+        fig0.add_trace(go.Indicator(
+                        mode = "delta",
+                        # value = status*100,
+                        value = int((1+growth)*100000)/1000,
+                        title = {"text": "Tingkat Perubahan (%):"},
+                        delta = {'reference': int(100), 'relative': False},
+                        domain = {'row': 0, 'column': 2},
+                        ))
+        fig0.update_layout(grid = {'rows': 1, 'columns': 3, 'pattern': "independent"})
+        st.plotly_chart(fig0,use_container_width=True)
+    else:
         c1,c2 = st.columns((1,1))
         with c1:
             st.subheader("Tahun 2018")
             # position: relative;
-            link1 = f"https://www.lightpollutionmap.info/#zoom=10&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nUm9hZCIsIm92ZXJsYXkiOiJ2aWlyc18yMDE4Iiwib3ZlcmxheWNvbG9yIjp0cnVlLCJvdmVybGF5b3BhY2l0eSI6NjAsImZlYXR1cmVzb3BhY2l0eSI6ODV9"
+            link1 = f"https://www.lightpollutionmap.info/#zoom={zoom}&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nUm9hZCIsIm92ZXJsYXkiOiJ2aWlyc18yMDE4Iiwib3ZlcmxheWNvbG9yIjp0cnVlLCJvdmVybGF5b3BhY2l0eSI6NjAsImZlYXR1cmVzb3BhY2l0eSI6ODV9"
             # link1 = f"https://www.lightpollutionmap.info/#zoom=10&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMTgiLCJvdmVybGF5Y29sb3IiOnRydWUsIm92ZXJsYXlvcGFjaXR5Ijo2OSwiZmVhdHVyZXMiOlsiU1FNIiwiU1FNTCJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ=="
             html1= '''
                 <style>
@@ -279,27 +312,20 @@ elif choice == 'Peta':
                 '''
             comp1 = components.html(html1,height=720,
                     width=880)
-#             if link1 is not None:
-#                     hti1 = Html2Image(output_path='./static/')
-#                     name = f'2018-{latlon}.png'
-#                     hti1.screenshot(html_str=html1,size=(880,720),save_as=name)
-#                     img1 = Image.open(f'./static/{name}')
-#                     # st.image(img1)
-#                     lum = calc_brightness(img1)
-#                     st.subheader(f'Luminousity index: {lum:.3f}')
-            comp1 = components.html(html1,height=720,
-                    width=880)
-#             if link1 is not None:
-#                     hti1 = Html2Image(output_path='./static/')
-#                     name = f'2018-{latlon}.png'
-#                     hti1.screenshot(html_str=html1,size=(880,720),save_as=name)
-#                     img1 = Image.open(f'./static/{name}')
-#                     # st.image(img1)
-#                     lum = calc_brightness(img1)
-#                     st.subheader(f'Luminousity index: {lum:.3f}')
+            fig1 = go.Figure()
+            fig1.add_trace(go.Indicator(
+                        mode = "number+delta",
+                        # value = status*100,
+                        value = int(lum*100000)/100000,
+                        title = {"text": "Index 2018:"},
+                        delta = {'reference': int(lum*100000)/100000, 'relative': False},
+                        domain = {'row': 0, 'column': 0},
+                        ))
+            
+            st.plotly_chart(fig1)
         with c2:
             st.subheader("Tahun 2022")
-            link2 = f"https://www.lightpollutionmap.info/#zoom=10&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nUm9hZCIsIm92ZXJsYXkiOiJ2aWlyc18yMDIyIiwib3ZlcmxheWNvbG9yIjp0cnVlLCJvdmVybGF5b3BhY2l0eSI6NjAsImZlYXR1cmVzb3BhY2l0eSI6ODV9"
+            link2 = f"https://www.lightpollutionmap.info/#zoom={zoom}&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nUm9hZCIsIm92ZXJsYXkiOiJ2aWlyc18yMDIyIiwib3ZlcmxheWNvbG9yIjp0cnVlLCJvdmVybGF5b3BhY2l0eSI6NjAsImZlYXR1cmVzb3BhY2l0eSI6ODV9"
             # link2 = f"https://www.lightpollutionmap.info/#zoom=10&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMjIiLCJvdmVybGF5Y29sb3IiOnRydWUsIm92ZXJsYXlvcGFjaXR5Ijo2OSwiZmVhdHVyZXMiOlsiU1FNIiwiU1FNTCJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ=="
             html2 ='''
                 <style>
@@ -323,38 +349,27 @@ elif choice == 'Peta':
                 '''
             comp2 = components.html(html2,height=720,
                     width=880)
-#             if link2 is not None:
-#                     hti2 = Html2Image(output_path='./static/')
-#                     name2 = f'2022-{latlon}.png'
-#                     hti1.screenshot(html_str=html1,size=(880,720),save_as=name2)
-#                     img2 = Image.open(f'./static/{name2}')
-#                     # st.image(img2)
-#                     lum2 = calc_brightness(img2)
-#                     st.subheader(f'Luminousity index: {lum2:.3f}')
-                    # li2022.append(lum2)
-            comp2 = components.html(html2,height=720,
-                    width=880)
-#             if link2 is not None:
-#                     hti2 = Html2Image(output_path='./static/')
-#                     name2 = f'2022-{latlon}.png'
-#                     hti1.screenshot(html_str=html1,size=(880,720),save_as=name2)
-#                     img2 = Image.open(f'./static/{name2}')
-#                     # st.image(img2)
-#                     lum2 = calc_brightness(img2)
-#                     st.subheader(f'Luminousity index: {lum2:.3f}')
-                    # li2022.append(lum2)
-        
-#         if img1 is not None and img2 is not None:
-#             st.subheader(f'Tingkat perubahan:{(lum2-lum):.3f}')
-#             st.subheader(f'Persentase perubahan:{((lum2-lum)/lum):.3%}')
-#         else:
-#             st.empty()
-#         if img1 is not None and img2 is not None:
-#             st.subheader(f'Tingkat perubahan:{(lum2-lum):.3f}')
-#             st.subheader(f'Persentase perubahan:{((lum2-lum)/lum):.3%}')
-#         else:
-#             st.empty()
-        
+
+            fig2 = go.Figure()
+            fig2.add_trace(go.Indicator(
+                        mode = "number+delta",
+                        # value = status*100,
+                        value = int(lum2*100000)/100000,
+                        title = {"text": "Index 2022:"},
+                        delta = {'reference': int(lum*100000)/100000, 'relative': False},
+                        domain = {'row': 0, 'column': 0},
+                        ))
+            fig2.add_trace(go.Indicator(
+                            mode = "delta",
+                            # value = status*100,
+                            value = int((1+growth)*100000)/1000,
+                            title = {"text": "Tingkat Perubahan (%):"},
+                            delta = {'reference': int(100), 'relative': False},
+                            domain = {'row': 0, 'column': 1},
+                            ))
+            fig2.update_layout(grid = {'rows': 1, 'columns': 2, 'pattern': "independent"})
+            st.plotly_chart(fig2,use_container_width=True)
+    
     lumcal2 = st.expander(label='Perhitungan Index Luminousity')
     with lumcal2:
         k1,k2 = st.columns((1,1))
@@ -362,21 +377,49 @@ elif choice == 'Peta':
             img3 = st.file_uploader(label='Upload map image 1',type=['png', 'jpg'])
             if img3 is not None:
                 st.image(Image.open(img3))
-                lum = calc_brightness(Image.open(img3))
-                st.subheader(f'Luminousity index: {lum:.3f}')
+                lum3 = calc_brightness(Image.open(img3))
+                st.subheader(f'Luminousity index: {lum3:.3f}')
             else:
                 st.write("No image uploaded")
         with k2:
             img4 = st.file_uploader(label='Upload map image 2',type=['png', 'jpg'])
             if img4 is not None:
                 st.image(Image.open(img4))
-                lum2 = calc_brightness(Image.open(img4))
-                st.subheader(f'Luminousity index: {lum2:.3f}')
+                lum4 = calc_brightness(Image.open(img4))
+                st.subheader(f'Luminousity index: {lum4:.4f}')
             else:
                 st.write("No image uploaded")
         if img3 is not None and img4 is not None:
-            st.subheader(f'Tingkat perubahan:{(lum2-lum):.3f}')
-            st.subheader(f'Persentase perubahan:{((lum2-lum)/lum):.3%}')
+            # st.subheader(f'Tingkat perubahan:{(lum4-lum3):.4f}')
+            growth4 = (lum4-lum3)/lum3
+            # st.subheader(f'Persentase perubahan:{growth:.2%}')
+            fig4 = go.Figure()
+            fig4.add_trace(go.Indicator(
+                        mode = "number+delta",
+                        # value = status*100,
+                        value = int(lum3*100000)/100000,
+                        title = {"text": "Index 2018:"},
+                        delta = {'reference': int(lum*100000)/100000, 'relative': False},
+                        domain = {'row': 0, 'column': 0},
+                        ))
+            fig4.add_trace(go.Indicator(
+                            mode = "number+delta",
+                            # value = status*100,
+                            value = int(lum4*100000)/100000,
+                            title = {"text": "Index 2022:"},
+                            delta = {'reference': int(lum4*100000)/100000, 'relative': False},
+                            domain = {'row': 0, 'column': 1},
+                            ))
+            fig4.add_trace(go.Indicator(
+                            mode = "delta",
+                            # value = status*100,
+                            value = int((1+growth4)*100000)/1000,
+                            title = {"text": "Tingkat Perubahan (%):"},
+                            delta = {'reference': int(100), 'relative': False},
+                            domain = {'row': 0, 'column': 2},
+                            ))
+            fig4.update_layout(grid = {'rows': 1, 'columns': 3, 'pattern': "independent"})
+            st.plotly_chart(fig4,use_container_width=True)
         else:
             st.empty()
     

@@ -118,6 +118,8 @@ if choice == 'Monitoring Potensi Risiko':
     st.dataframe(dftable,use_container_width=True)
 
 elif choice =='Graph Network Analysis':
+    import plotly.io as pio
+    pio.templates.default = "plotly_dark"
     dfnet = pd.read_csv('moneypol2.csv',sep=";")
     # st.dataframe(dfnet, use_container_width=True)
     provinsi = st.selectbox("Pilih Wilayah",dfnet['provinsi'].unique())

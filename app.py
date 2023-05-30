@@ -85,7 +85,7 @@ if choice == 'Monitoring Potensi Risiko':
         st.plotly_chart(create_wordcloud(dfcase,'text'))
 
     dftable = dfcase[['kasus','bulan','tahun','pemda']]
-    st.dataframe(dftable,use_container_width=True)
+    st.dataframe(dftable)
 
 elif choice == 'Analisis Sentimen & Emosi Publik':
     # history = st.expander(label="Analisis Data historis Twitter")

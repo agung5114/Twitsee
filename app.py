@@ -31,6 +31,11 @@ def getApbd():
     dfa = pd.read_excel('Program APBD.xlsx')
     return dfa
 
+@st.cache_data
+def getModal():
+    dfm = pd.read_excel('Program APBD.xlsx')
+    return dfm
+
 from PIL import Image
 st.image(Image.open('maws-banner.png'))
 st.markdown('<style>h1{color:dark-grey;font-size:62px}</style>',unsafe_allow_html=True)
@@ -274,7 +279,7 @@ elif choice == 'Monitoring Program Daerah':
 
 
 elif choice == 'Luminosity Analysis':
-    dfApbd = getApbd()
+    dfModal = getModal()
     st.subheader('Luminosity Maps')
     import streamlit.components.v1 as components
     # from html2image import Html2Image
@@ -441,7 +446,9 @@ elif choice == 'Luminosity Analysis':
             fig2.update_layout(grid = {'rows': 1, 'columns': 2, 'pattern': "independent"})
             st.plotly_chart(fig2,use_container_width=True)
 #     dfApbd = dfApbd['
-    st.dataframe(dfApbd.groupby(['Program','Akun Analisis','Provinsi'],as_index=False).agg({'Nilaianggaran':'sum'}),use_container_width=True)
+
+    st.dataframe(dfModal,use_container_width=True)
+    
     lumcal2 = st.expander(label='Perhitungan Index Luminosity')
     with lumcal2:
         k1,k2 = st.columns((1,1))

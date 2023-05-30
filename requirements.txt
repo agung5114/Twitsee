@@ -76,7 +76,8 @@ smmap==5.0.0
 snscrape @ git+https://github.com/JustAnotherArchivist/snscrape.git@1f46a1ce13f0213fbd071a6baa951cc3f2cb37bb
 soupsieve==2.4.1
 statsmodels==0.13.5
-streamlit==1.10.0
+streamlit
+#streamlit==1.10.0
 sympy==1.11.1
 tabulate==0.9.0
 tenacity==8.2.2

@@ -52,13 +52,13 @@ if choice == 'Monitoring Potensi Risiko':
     with c1:
         components.html('''
             <div class='tableauPlaceholder' id='viz1683812683355' style='position: relative'><noscript><a href='#'><img alt='Tingkat Kerawanan dan Upaya Pencegahan Korupsi ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;IndeksSPI&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='IndeksSPI&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;IndeksSPI&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1683812683355');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='977px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
-            ''',height=627,
-                width=800)
+            ''',height=1440,
+                width=900)
     with c2:
         components.html('''
             <div class='tableauPlaceholder' id='viz1683819509018' style='position: relative'><noscript><a href='#'><img alt='Perkembangan Total Harta di LHKPN ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;LH&#47;LHKPN&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='LHKPN&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;LH&#47;LHKPN&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1683819509018');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='800px';vizElement.style.height='627px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='800px';vizElement.style.height='627px';} else { vizElement.style.width='100%';vizElement.style.height='727px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
-            ''',height=627,
-                width=800)
+            ''',height=1440,
+                width=900)
     k1,k2 = st.columns((1,1))
     with k1:
         st.subheader('Penindakan KPK terkait Pemerintah Daerah')
@@ -167,31 +167,34 @@ elif choice == 'Analisis Sentimen & Emosi Publik':
         #     st.empty()
         if submitted:
             raw_text = search_text
-            df = getTweets(raw_text,start,end,50)
-            df['emosi'] = [emotions_emoji[x]+x for x in df['emotion']]
-            df['tanggal'] = pd.to_datetime(df['date']).dt.date
-            df['count'] = 1
-            df['engagement'] = df['count']+df['retweetCount']
-            df['group'] = ['opposers' if x in ['anger','fear','sadness','sad'] else 'supporters' for x in df['emotion']]
-            df = df[['tanggal','username','rawContent','sentiment','emosi','group','count','engagement']]
-            st.subheader("Tren Sentiment Publik")
-            dfbar = df.groupby(['tanggal','sentiment'],as_index=False).agg({'count':'sum'})
-            linefig = px.bar(dfbar, x='tanggal', y='count', color='sentiment', color_discrete_map=sentiment_color)
-            st.plotly_chart(linefig,use_container_width=True)
-            col1,col2 = st.columns((1,1))
-            with col1:
-                st.subheader("Sebaran Sentiment Publik")
-                piefig = px.pie(df, names='sentiment', values='count', color='sentiment', hole=.6, color_discrete_map=sentiment_color)
-                st.plotly_chart(piefig,use_container_width=True)
-            with col2:
-                st.subheader("Sebaran Emosi Publik")
-                # barfig = px.pie(df, names='emosi', values='likeCount', color='emosi',hole=.6,color_discrete_map=emotions_color)
-                # st.plotly_chart(barfig,use_container_width=True)
-                figsun = px.sunburst(df, path=['group','emosi'],values='engagement')
-                figsun.update_traces(textinfo='label+value+percent entry')
-                figsun.update_traces(marker_colors=[emotions_color[cat] for cat in figsun.data[-1].labels])
-                st.plotly_chart(figsun,use_container_width=True)
-            st.dataframe(df,use_container_width=True)
+            try:
+                df = getTweets(raw_text,start,end,50)
+                df['emosi'] = [emotions_emoji[x]+x for x in df['emotion']]
+                df['tanggal'] = pd.to_datetime(df['date']).dt.date
+                df['count'] = 1
+                df['engagement'] = df['count']+df['retweetCount']
+                df['group'] = ['opposers' if x in ['anger','fear','sadness','sad'] else 'supporters' for x in df['emotion']]
+                df = df[['tanggal','username','rawContent','sentiment','emosi','group','count','engagement']]
+                st.subheader("Tren Sentiment Publik")
+                dfbar = df.groupby(['tanggal','sentiment'],as_index=False).agg({'count':'sum'})
+                linefig = px.bar(dfbar, x='tanggal', y='count', color='sentiment', color_discrete_map=sentiment_color)
+                st.plotly_chart(linefig,use_container_width=True)
+                col1,col2 = st.columns((1,1))
+                with col1:
+                    st.subheader("Sebaran Sentiment Publik")
+                    piefig = px.pie(df, names='sentiment', values='count', color='sentiment', hole=.6, color_discrete_map=sentiment_color)
+                    st.plotly_chart(piefig,use_container_width=True)
+                with col2:
+                    st.subheader("Sebaran Emosi Publik")
+                    # barfig = px.pie(df, names='emosi', values='likeCount', color='emosi',hole=.6,color_discrete_map=emotions_color)
+                    # st.plotly_chart(barfig,use_container_width=True)
+                    figsun = px.sunburst(df, path=['group','emosi'],values='engagement')
+                    figsun.update_traces(textinfo='label+value+percent entry')
+                    figsun.update_traces(marker_colors=[emotions_color[cat] for cat in figsun.data[-1].labels])
+                    st.plotly_chart(figsun,use_container_width=True)
+                st.dataframe(df,use_container_width=True)
+            except:
+                st.write('Data tidak ditemukan")
         else:
             st.write("masukkan kata pencarian")
 elif choice == 'Analisis Data Keuangan':

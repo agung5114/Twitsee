@@ -10,6 +10,7 @@ import pandas as pd
 import datetime
 from datetime import timedelta
 from scraper import getTweets
+from generateWordcloud import create_wordcloud
 
 end = datetime.date.today()
 start = end - timedelta(days = 31)
@@ -18,8 +19,9 @@ end = end.strftime('%Y-%m-%d')
 start = start.strftime('%Y-%m-%d')
 belanja_color = {"53. Belanja Modal": "#e96678", "51. Belanja Pegawai": "#ced4d0", "52. Belanja Barang Jasa": "#70bda0",'54. Belanja Lainnya':"#e96678"}
 sentiment_color = {"negative": "#e96678", "neutral": "#ced4d0", "positive": "#70bda0"}
+group_color = {"opposers": "#e96678", "supporters": "#70bda0"}
 emotions_emoji = {"anger":"😡","disgust":"🤮", "fear":"😱", "happy":"🤗", "joy":"🤩", "love":"😍", "neutral":"😐", "sad":"😔", "sadness":"😥", "shame":"😳", "surprise":"😮"}
-emotions_color = {"😡anger":"#de425b","🤮disgust":"#df676e", "😱fear":"#e88b8d", "😔sad":"#eeadad", "😥sadness":"#f1cfce", "😐neutral":"#f1f1f1","😳shame":"#d0ddc9", "😮surprise":"#afc9a2","🤗happy":"#8eb67c", "🤩joy":"#6ca257","😍love":"#488f31"}
+emotions_color = {"opposers": "#e96678", "supporters": "#70bda0","😡anger":"#de425b","🤮disgust":"#df676e", "😱fear":"#e88b8d", "😔sad":"#eeadad", "😥sadness":"#f1cfce", "😐neutral":"#f1f1f1","😳shame":"#d0ddc9", "😮surprise":"#afc9a2","🤗happy":"#8eb67c", "🤩joy":"#6ca257","😍love":"#488f31"}
             
 from PIL import Image
 # def main():
@@ -30,43 +32,121 @@ st.image(Image.open('maws-banner.png'))
 st.markdown('<style>h1{color:dark-grey;font-size:62px}</style>',unsafe_allow_html=True)
 st.sidebar.image(Image.open('maws-menu.png'))
 # menu = ['Peta','Monitoring Nasional','Analisis Risiko Pemerintah Daerah','Tren & Histori Sentimen Publik', 'Sentimen Publik Terkini','Analisis LHKPN','Smart Monitoring Program Daerah']
-menu = ['Monitoring Potensi Risiko','Luminosity Analysis','Financial Analysis','Monitoring Program Daerah','Analisis Sentimen Publik']
+menu = ['Monitoring Potensi Risiko','Luminosity Analysis','Analisis Data Keuangan','Monitoring Program Daerah','Analisis Sentimen & Emosi Publik']
 choice = st.sidebar.selectbox("Pilih Menu",menu)
 
-if choice == 'Analisis Sentimen Publik':
+if choice == 'Monitoring Potensi Risiko':
+    st.subheader('Peta Risiko Korupsi Pemerintah Daerah')
+    df = pd.read_csv('kasusAll.csv',sep=";")
+    c1,c2 = st.columns((1,1))
+    import streamlit.components.v1 as components
+    with c1:
+        components.html('''
+            <div class='tableauPlaceholder' id='viz1683812683355' style='position: relative'><noscript><a href='#'><img alt='Tingkat Kerawanan dan Upaya Pencegahan Korupsi ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;IndeksSPI&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='IndeksSPI&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;IndeksSPI&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1683812683355');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='977px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+            ''',height=720,
+                width=1440)
+    with c2:
+        components.html('''
+            <div class='tableauPlaceholder' id='viz1683819509018' style='position: relative'><noscript><a href='#'><img alt='Perkembangan Total Harta di LHKPN ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;LH&#47;LHKPN&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='LHKPN&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;LH&#47;LHKPN&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1683819509018');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='800px';vizElement.style.height='627px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='800px';vizElement.style.height='627px';} else { vizElement.style.width='100%';vizElement.style.height='727px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
+            ''',height=720,
+                width=1440)
+    st.subheader('Penindakan KPK terkait Pemerintah Daerah')
+    k1,k2 = st.columns((1,1))
+    with k1:
+        dfplot = df.groupby(by=['tahun'],as_index=False).agg({'kepala daerah':'sum','dprd':'sum','dinas':'sum'})
+        fig = go.Figure()
+        fig.add_trace(go.Bar(
+            x=dfplot['tahun'],
+            y=dfplot['kepala daerah'],
+            name='kepala daerah',
+            marker_color='indianred',
+            textposition="inside",
+            text=dfplot['kepala daerah'],
+        ))
+        fig.add_trace(go.Bar(
+            x=dfplot['tahun'],
+            y=dfplot['dprd'],
+            name='dprd',
+            marker_color='lightsalmon',
+            textposition="inside",
+            text=dfplot['dprd'],
+        ))
+        fig.add_trace(go.Bar(
+            x=dfplot['tahun'],
+            y=dfplot['dinas'],
+            name='dinas',
+            marker_color='darkred',
+            textposition="inside",
+            text=dfplot['dinas'],
+        ))
+        fig.update_layout(title_text='Perkembangan kasus per tahun')
+        st.plotly_chart(fig,use_container_width=True)
+    with k2:
+        st.plotly_chart(create_wordcloud(df,'text'))
+
+    dftable = df[['kasus','bulan','tahun','pemda']]
+    st.dataframe(dftable,use_container_width=True)
+
+elif choice == 'Analisis Sentimen & Emosi Publik':
     # history = st.expander(label="Analisis Data historis Twitter")
     # with history:
-    df = pd.read_csv('twitdata.csv')
-    custom_search = st.expander(label='Histori Persepsi Publik Melalui Media Twitter')
-    with custom_search:
+    @st.cache_data
+    def getData():
+        df = pd.read_csv('twitpemda.csv')
+        df['emosi'] = [emotions_emoji[x]+x for x in df['emotion']]
+        df['group'] = ['opposers' if x in ['anger','fear','sadness','sad'] else 'supporters' for x in df['emotion']]
+        # df['bulan'] = pd.to_datetime(df['date']).dt.month
+        # df['tanggal'] = pd.to_datetime(df['date']).dt.date
+        # df['count'] = [1 for x in df['emotion']]
+        # df['engagement'] = df['count']+df['retweetCount']+df['likeCount']
+        df = df[['tanggal','tahun','username','rawContent','sentiment','emosi','group','count','engagement','city']]
+        return df
+    genre = st.sidebar.radio("Pilih Analisis",('Data Historis', 'Realtime'))
+    if genre == 'Data Historis':
+        st.subheader('Histori Persepsi Publik Melalui Media Twitter')
+        df = getData()
         listpemda = df['city'].unique().tolist()
-        ctr = st.selectbox("Pilih Pemda",listpemda)
-        if st.button("Jalankan"):
-            df = df[df['city'].isin([ctr])]
-            df['emoji'] = [emotions_emoji[x]+x for x in df['emotion']]
-            df['bulan'] = pd.to_datetime(df['date']).dt.month
-            df['tanggal'] = pd.to_datetime(df['date']).dt.date
-            df['count'] = [1 for x in df['emotion']]
+        listtahun = df['tahun'].unique().tolist()
+        sb1,sb2 = st.columns((1,1))
+        with sb1:
+            ctr = st.selectbox("Pilih Pemda",['All']+listpemda)
+        with sb2:
+            thn = st.selectbox("Pilih Tahun",listtahun, key=2023)
+        
+        # if st.button("Jalankan"):
+        if ctr == 'All':
             st.subheader("Tren Sentiment Publik")
-            linefig = px.bar(df, x='tanggal', y='count', color='sentiment', color_discrete_map=sentiment_color)
+            df = df[df['tahun']==thn]
+            dfplot = df.groupby(by=['tanggal','sentiment'],as_index=False).agg({'engagement':'sum'})
+            linefig = px.bar(df, x='tanggal', y='engagement', color='sentiment', color_discrete_map=sentiment_color)
             st.plotly_chart(linefig,use_container_width=True)
+            st.dataframe(df,use_container_width=True)
+        else:
+            dfpemda = df[df['city'].isin([ctr])]
+            dfpwmda= dfpemda[dfpemda['tahun']==thn]
             # st.line_chart(df)
             c1,c2 = st.columns((1,1))
             with c1:
                 st.subheader("Sebaran Sentiment Publik")
-                piefig = px.pie(df, names='sentiment', values='count', color='sentiment', hole=.6, color_discrete_map=sentiment_color)
+                piefig = px.pie(dfpemda, names='sentiment', values='count', color='sentiment', hole=.6, color_discrete_map=sentiment_color)
                 st.plotly_chart(piefig,use_container_width=True)
             with c2:
                 st.subheader("Sebaran Emosi Publik")
-                barfig = px.pie(df, names='emoji', values='likeCount', color='emoji',hole=.6)
-                st.plotly_chart(barfig,use_container_width=True)
+                # barfig = px.pie(dfpemda, names='emosi', values='engagement', color='emosi',hole=.6,color_discrete_map=emotions_color)
+                figsun = px.sunburst(df, path=['group','emosi'],values='engagement')
+                figsun.update_traces(textinfo='label+value+percent entry')
+                figsun.update_traces(marker_colors=[emotions_color[cat] for cat in figsun.data[-1].labels])
+                st.plotly_chart(figsun,use_container_width=True)
                 # barfig = px.bar(df, x='emoji', y='likeCount', color='emoji', color_discrete_map=emotions_color)
                 # st.plotly_chart(barfig,use_container_width=True)
-            dff = df[['date','username','rawContent','emoji','sentiment','likeCount', 'retweetCount', 'mentioned']]
-            st.dataframe(dff)
-    
-    realtime = st.expander(label="Sentimen dan Emosi Publik Terkini")
-    with realtime:
+            dff = dfpemda
+            st.dataframe(dff,use_container_width=True)
+    else:
+        st.write("Sentimen dan Emosi Publik Terkini")
+    # custom_search = st.expander(label='Histori Persepsi Publik Melalui Media Twitter')
+    # with custom_search:
+        # realtime = st.expander(label="Sentimen dan Emosi Publik Terkini")
+        # with realtime:
         submitted = st.empty()
         with st.form(key='text'):
             search_text = st.text_input("Pencarian Tweet terbaru")
@@ -79,7 +159,7 @@ if choice == 'Analisis Sentimen Publik':
         if submitted:
             raw_text = search_text
             df = getTweets(raw_text,start,end,50)
-            df['emoji'] = [emotions_emoji[x]+x for x in df['emotion']]
+            df['emosi'] = [emotions_emoji[x]+x for x in df['emotion']]
             df['tanggal'] = pd.to_datetime(df['date']).dt.date
             df['count'] = 1
             df['post'] = df['count']+df['retweetCount']
@@ -94,12 +174,16 @@ if choice == 'Analisis Sentimen Publik':
                 st.plotly_chart(piefig,use_container_width=True)
             with col2:
                 st.subheader("Sebaran Emosi Publik")
-                barfig = px.pie(df, names='emoji', values='likeCount', color='emoji',hole=.6,color_discrete_map=emotions_color)
-                st.plotly_chart(barfig,use_container_width=True)
-            st.dataframe(df)
+                # barfig = px.pie(df, names='emosi', values='likeCount', color='emosi',hole=.6,color_discrete_map=emotions_color)
+                # st.plotly_chart(barfig,use_container_width=True)
+                figsun = px.sunburst(df, path=['group','emosi'],values='engagement')
+                figsun.update_traces(textinfo='label+value+percent entry')
+                figsun.update_traces(marker_colors=[emotions_color[cat] for cat in figsun.data[-1].labels])
+                st.plotly_chart(figsun,use_container_width=True)
+            st.dataframe(df,use_container_width=True)
         else:
             st.write("masukkan kata pencarian")
-elif choice == 'Financial Analysis':
+elif choice == 'Analisis Data Keuangan':
     st.subheader("Analisis Risiko Berdasarkan Belanja dan Histori Penindakan KPK")
     # ipm = pd.read_csv('ipm.csv')
     kasus = pd.read_csv('penindakan.csv')
@@ -153,20 +237,6 @@ elif choice == 'Financial Analysis':
                 linefig2 = px.line(kasus, x='Tahun', y='Jumlah Penindakan')
                 linefig2.update_xaxes(type='category')
                 st.plotly_chart(linefig2,use_container_width=True)
-
-
-elif choice == 'Monitoring Potensi Risiko':
-    st.subheader('Peta Risiko Korupsi Pemerintah Daerah')
-    import streamlit.components.v1 as components
-    components.html('''
-        <div class='tableauPlaceholder' id='viz1683812683355' style='position: relative'><noscript><a href='#'><img alt='Tingkat Kerawanan dan Upaya Pencegahan Korupsi ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;IndeksSPI&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='IndeksSPI&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;IndeksSPI&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1683812683355');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='977px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
-        ''',height=900,
-            width=1440)
-    
-    components.html('''
-        <div class='tableauPlaceholder' id='viz1683819509018' style='position: relative'><noscript><a href='#'><img alt='Perkembangan Total Harta di LHKPN ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;LH&#47;LHKPN&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='LHKPN&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;LH&#47;LHKPN&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1683819509018');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='800px';vizElement.style.height='627px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='800px';vizElement.style.height='627px';} else { vizElement.style.width='100%';vizElement.style.height='727px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
-        ''',height=900,
-            width=1440)
     
 elif choice == 'Monitoring Program Daerah':
     st.subheader("Program Belanja Daerah Berdasarkan Kata Kunci")

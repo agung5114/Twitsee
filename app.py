@@ -194,7 +194,7 @@ elif choice == 'Analisis Sentimen & Emosi Publik':
                     st.plotly_chart(figsun,use_container_width=True)
                 st.dataframe(df,use_container_width=True)
             except:
-                st.write('Data tidak ditemukan")
+                st.write("Data tidak ditemukan")
         else:
             st.write("masukkan kata pencarian")
 elif choice == 'Analisis Data Keuangan':

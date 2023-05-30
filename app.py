@@ -14,6 +14,7 @@ from generateWordcloud import create_wordcloud
 
 # from similar import getProgram, apbd
 from classifier import pre_process
+from pynetwork import draw_network
 
 end = datetime.date.today()
 start = end - timedelta(days = 31)
@@ -28,7 +29,7 @@ emotions_color = {"opposers": "#e96678", "supporters": "#70bda0","😡anger":"#d
 
 @st.cache_data
 def getApbd():
-    dfa = pd.read_excel('Program APBD.xlsx')
+    dfa = pd.read_excel('ProgramAPBD.xlsx')
     return dfa
 
 @st.cache_data
@@ -36,12 +37,30 @@ def getModal():
     dfm = pd.read_excel('BelanjaModal.xlsx')
     return dfm
 
+# @st.cache_data
+# def getNet():
+#     dfn = pd.read_csv('moneypol2.csv',sep=";")
+#     return dfn
+
+# @st.cache_data
+# def getSources():
+#     dfn = pd.read_csv('netSource.csv',sep=";")
+#     return dfn
+
+# @st.cache_data
+# def drawNet():
+#     dfsource = getNet()
+#     # dfsource.dropna(subset = ['negaraSource'], inplace=True)
+#     # dfsource['nilaitransaksi'] = dfsource['nilaijuta']
+#     net1 = draw_network(dfsource,'PARTAI','NAMA','Burg', 'teal','nilaitransaksi')
+#     return net1
+
 from PIL import Image
 st.image(Image.open('maws-banner.png'))
 st.markdown('<style>h1{color:dark-grey;font-size:62px}</style>',unsafe_allow_html=True)
 st.sidebar.image(Image.open('maws-menu.png'))
 # menu = ['Peta','Monitoring Nasional','Analisis Risiko Pemerintah Daerah','Tren & Histori Sentimen Publik', 'Sentimen Publik Terkini','Analisis LHKPN','Smart Monitoring Program Daerah']
-menu = ['Monitoring Potensi Risiko','Luminosity Analysis','Analisis Data Keuangan','Monitoring Program Daerah','Analisis Sentimen & Emosi Publik']
+menu = ['Monitoring Potensi Risiko','Luminosity Analysis','Analisis Data Keuangan','Graph Network Analysis','Monitoring Program Daerah','Analisis Sentimen & Emosi Publik']
 choice = st.sidebar.selectbox("Pilih Menu",menu)
 
 if choice == 'Monitoring Potensi Risiko':
@@ -52,13 +71,15 @@ if choice == 'Monitoring Potensi Risiko':
     with c1:
         components.html('''
             <div class='tableauPlaceholder' id='viz1683812683355' style='position: relative'><noscript><a href='#'><img alt='Tingkat Kerawanan dan Upaya Pencegahan Korupsi ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;IndeksSPI&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='IndeksSPI&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;In&#47;IndeksSPI&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1683812683355');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='100%';vizElement.style.height=(divElement.offsetWidth*0.75)+'px';} else { vizElement.style.width='100%';vizElement.style.height='977px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
-            ''',height=1440,
-                width=720)
+            ''',width=900,height=700)
+            # height=1440,
+            # width=720)
     with c2:
         components.html('''
             <div class='tableauPlaceholder' id='viz1683819509018' style='position: relative'><noscript><a href='#'><img alt='Perkembangan Total Harta di LHKPN ' src='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;LH&#47;LHKPN&#47;Dashboard1&#47;1_rss.png' style='border: none' /></a></noscript><object class='tableauViz'  style='display:none;'><param name='host_url' value='https%3A%2F%2Fpublic.tableau.com%2F' /> <param name='embed_code_version' value='3' /> <param name='site_root' value='' /><param name='name' value='LHKPN&#47;Dashboard1' /><param name='tabs' value='no' /><param name='toolbar' value='yes' /><param name='static_image' value='https:&#47;&#47;public.tableau.com&#47;static&#47;images&#47;LH&#47;LHKPN&#47;Dashboard1&#47;1.png' /> <param name='animate_transition' value='yes' /><param name='display_static_image' value='yes' /><param name='display_spinner' value='yes' /><param name='display_overlay' value='yes' /><param name='display_count' value='yes' /><param name='language' value='en-US' /><param name='filter' value='publish=yes' /></object></div>                <script type='text/javascript'>                    var divElement = document.getElementById('viz1683819509018');                    var vizElement = divElement.getElementsByTagName('object')[0];                    if ( divElement.offsetWidth > 800 ) { vizElement.style.width='800px';vizElement.style.height='627px';} else if ( divElement.offsetWidth > 500 ) { vizElement.style.width='800px';vizElement.style.height='627px';} else { vizElement.style.width='100%';vizElement.style.height='727px';}                     var scriptElement = document.createElement('script');                    scriptElement.src = 'https://public.tableau.com/javascripts/api/viz_v1.js';                    vizElement.parentNode.insertBefore(scriptElement, vizElement);                </script>
-            ''',height=1440,
-                width=720)
+            ''',width=900,height=700)
+            # height=1440,
+            # width=720)
     k1,k2 = st.columns((1,1))
     with k1:
         st.subheader('Penindakan KPK terkait Pemerintah Daerah')
@@ -91,10 +112,21 @@ if choice == 'Monitoring Potensi Risiko':
         fig.update_layout(title_text='Perkembangan kasus per tahun')
         st.plotly_chart(fig,use_container_width=True)
     with k2:
-        st.plotly_chart(create_wordcloud(dfcase,'text'))
+        st.plotly_chart(create_wordcloud(dfcase,'text'),use_container_width=True)
 
     dftable = dfcase[['kasus','bulan','tahun','pemda']]
     st.dataframe(dftable,use_container_width=True)
+
+elif choice =='Graph Network Analysis':
+    dfnet = pd.read_csv('moneypol2.csv',sep=";")
+    # st.dataframe(dfnet, use_container_width=True)
+    provinsi = st.selectbox("Pilih Wilayah",dfnet['provinsi'].unique())
+    dfnet = dfnet[dfnet['provinsi']==provinsi]
+    net1 = draw_network(dfnet,'partai','nama','Burg', 'teal','nilaitransaksi')
+    net1.update_layout(title_text='Jaringan transaksi')
+    # net2 = draw_network(dfnet,'PARTAI','NAMA','Burg', 'teal','nilaitransaksi')
+    st.plotly_chart(net1,use_container_width=True)
+    st.dataframe(dfnet, use_container_width=True)
 
 elif choice == 'Analisis Sentimen & Emosi Publik':
     # history = st.expander(label="Analisis Data historis Twitter")
@@ -120,7 +152,7 @@ elif choice == 'Analisis Sentimen & Emosi Publik':
         with sb1:
             ctr = st.selectbox("Pilih Pemda",['All']+listpemda)
         with sb2:
-            thn = st.selectbox("Pilih Tahun",listtahun, key=2023)
+            thn = st.selectbox("Pilih Tahun",listtahun, index=listtahun.index(2023))
         
         # if st.button("Jalankan"):
         if ctr == 'All':
@@ -254,7 +286,7 @@ elif choice == 'Analisis Data Keuangan':
     
 elif choice == 'Monitoring Program Daerah':
     st.subheader("Program Belanja Daerah Berdasarkan Kata Kunci")
-    apbd = getApbd
+    apbd = getApbd()
     custom_search = st.expander(label='Pencarian Program')
     with custom_search:
         keyw = st.text_input("Masukkan Kata Kunci")
@@ -276,16 +308,13 @@ elif choice == 'Monitoring Program Daerah':
                 st.write("Total anggaran " + ": Rp" + str(round(df['Nilaianggaran'].sum()/1e9,2)) + " Miliar")
                 st.write("Porsi anggaran " + " terhadap total belanja: " + str(round(df['Nilaianggaran'].sum()/apbd['Nilaianggaran'].sum()*100,2)) + "%")
             with c2:
-                fig = px.bar(df, x="Provinsi", y="Nilaianggaran", color="Akun Analisis", barmode = 'stack')
+                fig = px.bar(df.sort_values(by=['Nilaianggaran']), x="Namapemda", y="Nilaianggaran", color="Akun Analisis", barmode = 'stack')
                 st.plotly_chart(fig,use_container_width=True)
-            st.dataframe(df.groupby(['Program','Akun Analisis','Provinsi'],as_index=False).agg({'Nilaianggaran':'sum'}),use_container_width=True)
+            st.dataframe(df.groupby(['Program','Akun Analisis','Namapemda'],as_index=False).agg({'Nilaianggaran':'sum'}),use_container_width=True)
 
 
 elif choice == 'Luminosity Analysis':
-    dfModal = getModal()
-    st.subheader('Luminosity Maps')
-    import streamlit.components.v1 as components
-    # from html2image import Html2Image
+    genre = st.sidebar.radio("Pilih Metode",('Pencarian Wilayah', 'Upload gambar'))
     def calc_brightness(image):
             greyscale_image = image.convert('L')
             histogram = greyscale_image.histogram()
@@ -295,166 +324,173 @@ elif choice == 'Luminosity Analysis':
                 ratio = histogram[index] / pixels
                 brightness += ratio * (-scale + index)
             return 1 if brightness == 255 else brightness / scale
+    if genre == 'Pencarian Wilayah':
+        dfModal = getModal()
+        st.subheader('Luminosity Maps')
+        import streamlit.components.v1 as components
+        # from html2image import Html2Image
 
-    st.subheader('Perkembangan Index Luminosity Pemda')
-    # dflok = pd.read_csv('latlon.csv')
-    # dflok = pd.read_csv('latlon.csv')
-    # st.dataframe(dflok)
-    # pemdas = dflok['city'].unique().tolist()
-    dflok = pd.read_csv('latlong_all.csv')
-    pemdas = dflok['pemda'].tolist()
-    latlon = st.selectbox(label='Pilih Pemda',options=pemdas, key='All')
-    pemdalok = dflok[dflok['pemda']==latlon]
-    # tombol = st.button('Jalankan')
-    # if tombol:
-    lat = pemdalok['lat'].tolist()[0]
-    lon = pemdalok['lon'].tolist()[0]
-    zoom = pemdalok['zoom'].tolist()[0]
-    st.write(f'Latitude:{lat} , Longitude:{lon}')
-    # lat='-6.1750'
-    # lon='106.8275'
-    lum = pemdalok['2018'].tolist()[0]
-    lum2 = pemdalok['2022'].tolist()[0]
-    # st.subheader(f'Tingkat perubahan:{(lum2-lum):.4f}')
-    gap = lum2-lum
-    growth = gap/lum
-    # st.subheader(f'Persentase perubahan:{growth:.2%}')
-    if latlon == 'All':
-        htmlindo= '''
-            <style>
-                .iframe-container { overflow: hidden;margin-top: -50px;}
-            </style>
-            <iframe
-                id="2021indo"
-                class="iframe-container"
-                src=https://www.lightpollutionmap.info/#zoom=4.59&lat=-2.9756&lon=115.2515&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMjEiLCJvdmVybGF5Y29sb3IiOmZhbHNlLCJvdmVybGF5b3BhY2l0eSI6NjUsImZlYXR1cmVzIjpbIlNRQyJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ==
-                frameborder="20"
-                width="1600"
-                height="720"
-            ></iframe>
-            <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.4/js/iframeResizer.min.js"></script>
-            <script>
-            iFrameResize({}, "#2021indo")
-            </script>
-            '''
-        components.html(htmlindo,height=730,width=1620)
-        fig0 = go.Figure()
-        fig0.add_trace(go.Indicator(
-                        mode = "number+delta",
-                        # value = status*100,
-                        value = int(lum*100000)/100000,
-                        title = {"text": "Index Luminosity 2018:"},
-                        delta = {'reference': int(lum*100000)/100000, 'relative': False},
-                        domain = {'row': 0, 'column': 0},
-                        ))
-        fig0.add_trace(go.Indicator(
-                        mode = "number+delta",
-                        # value = status*100,
-                        value = int(lum2*100000)/100000,
-                        title = {"text": "Index Luminosity 2022:"},
-                        delta = {'reference': int(lum*100000)/100000, 'relative': False},
-                        domain = {'row': 0, 'column': 1},
-                        ))
-        fig0.add_trace(go.Indicator(
-                        mode = "delta",
-                        # value = status*100,
-                        value = int((1+growth)*100000)/1000,
-                        title = {"text": "Tingkat Perubahan (%):"},
-                        delta = {'reference': int(100), 'relative': False},
-                        domain = {'row': 0, 'column': 2},
-                        ))
-        fig0.update_layout(grid = {'rows': 1, 'columns': 3, 'pattern': "independent"})
-        st.plotly_chart(fig0,use_container_width=True)
-    else:
-        c1,c2 = st.columns((1,1))
-        with c1:
-            st.subheader("Tahun 2018")
-            # position: relative;
-            link1 = f"https://www.lightpollutionmap.info/#zoom={zoom}&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nUm9hZCIsIm92ZXJsYXkiOiJ2aWlyc18yMDE4Iiwib3ZlcmxheWNvbG9yIjp0cnVlLCJvdmVybGF5b3BhY2l0eSI6NjAsImZlYXR1cmVzb3BhY2l0eSI6ODV9"
-            # link1 = f"https://www.lightpollutionmap.info/#zoom=10&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMTgiLCJvdmVybGF5Y29sb3IiOnRydWUsIm92ZXJsYXlvcGFjaXR5Ijo2OSwiZmVhdHVyZXMiOlsiU1FNIiwiU1FNTCJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ=="
-            html1= '''
+        st.subheader('Perkembangan Index Luminosity Pemda')
+        # dflok = pd.read_csv('latlon.csv')
+        # dflok = pd.read_csv('latlon.csv')
+        # st.dataframe(dflok)
+        # pemdas = dflok['city'].unique().tolist()
+        dflok = pd.read_csv('latlong_all.csv')
+        pemdas = dflok['pemda'].tolist()
+        latlon = st.selectbox(label='Pilih Pemda',options=pemdas, key='All')
+        pemdalok = dflok[dflok['pemda']==latlon]
+        # tombol = st.button('Jalankan')
+        # if tombol:
+        lat = pemdalok['lat'].tolist()[0]
+        lon = pemdalok['lon'].tolist()[0]
+        zoom = pemdalok['zoom'].tolist()[0]
+        st.write(f'Latitude:{lat} , Longitude:{lon}')
+        # lat='-6.1750'
+        # lon='106.8275'
+        lum = pemdalok['2018'].tolist()[0]
+        lum2 = pemdalok['2022'].tolist()[0]
+        # st.subheader(f'Tingkat perubahan:{(lum2-lum):.4f}')
+        gap = lum2-lum
+        growth = gap/lum
+        # st.subheader(f'Persentase perubahan:{growth:.2%}')
+        if latlon == 'All':
+            htmlindo= '''
                 <style>
                     .iframe-container { overflow: hidden;margin-top: -50px;}
                 </style>
                 <iframe
-                    id="2018map"
+                    id="2021indo"
                     class="iframe-container"
-                    src='''+link1+'''
+                    src=https://www.lightpollutionmap.info/#zoom=4.59&lat=-2.9756&lon=115.2515&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMjEiLCJvdmVybGF5Y29sb3IiOmZhbHNlLCJvdmVybGF5b3BhY2l0eSI6NjUsImZlYXR1cmVzIjpbIlNRQyJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ==
                     frameborder="20"
-                    width="860"
+                    width="1600"
                     height="720"
                 ></iframe>
                 <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.4/js/iframeResizer.min.js"></script>
                 <script>
-                iFrameResize({}, "#2018map")
+                iFrameResize({}, "#2021indo")
                 </script>
                 '''
-            comp1 = components.html(html1,height=720,
-                    width=880)
-            fig1 = go.Figure()
-            fig1.add_trace(go.Indicator(
-                        mode = "number+delta",
-                        # value = status*100,
-                        value = int(lum*100000)/100000,
-                        title = {"text": "Index Luminosity 2018:"},
-                        delta = {'reference': int(lum*100000)/100000, 'relative': False},
-                        domain = {'row': 0, 'column': 0},
-                        ))
-            
-            st.plotly_chart(fig1)
-        with c2:
-            st.subheader("Tahun 2022")
-            link2 = f"https://www.lightpollutionmap.info/#zoom={zoom}&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nUm9hZCIsIm92ZXJsYXkiOiJ2aWlyc18yMDIyIiwib3ZlcmxheWNvbG9yIjp0cnVlLCJvdmVybGF5b3BhY2l0eSI6NjAsImZlYXR1cmVzb3BhY2l0eSI6ODV9"
-            # link2 = f"https://www.lightpollutionmap.info/#zoom=10&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMjIiLCJvdmVybGF5Y29sb3IiOnRydWUsIm92ZXJsYXlvcGFjaXR5Ijo2OSwiZmVhdHVyZXMiOlsiU1FNIiwiU1FNTCJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ=="
-            html2 ='''
-                <style>
-                    .iframe-container {
-                        overflow: hidden;
-                        margin-top: -50px;
-                    }
-                </style>
-                <iframe
-                    id="2022map"
-                    class="iframe-container"
-                    src='''+link2+'''
-                    frameborder="20"
-                    width="860"
-                    height="720"
-                ></iframe>
-                <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.4/js/iframeResizer.min.js"></script>
-                <script>
-                iFrameResize({}, "#2022map")
-                </script>
-                '''
-            comp2 = components.html(html2,height=720,
-                    width=880)
-
-            fig2 = go.Figure()
-            fig2.add_trace(go.Indicator(
-                        mode = "number+delta",
-                        # value = status*100,
-                        value = int(lum2*100000)/100000,
-                        title = {"text": "Index Luminosity 2022:"},
-                        delta = {'reference': int(lum*100000)/100000, 'relative': False},
-                        domain = {'row': 0, 'column': 0},
-                        ))
-            fig2.add_trace(go.Indicator(
+            components.html(htmlindo,height=730,width=1620)
+            fig0 = go.Figure()
+            fig0.add_trace(go.Indicator(
+                            mode = "number+delta",
+                            # value = status*100,
+                            value = int(lum*100000)/100000,
+                            title = {"text": "Index Luminosity 2018:"},
+                            delta = {'reference': int(lum*100000)/100000, 'relative': False},
+                            domain = {'row': 0, 'column': 0},
+                            ))
+            fig0.add_trace(go.Indicator(
+                            mode = "number+delta",
+                            # value = status*100,
+                            value = int(lum2*100000)/100000,
+                            title = {"text": "Index Luminosity 2022:"},
+                            delta = {'reference': int(lum*100000)/100000, 'relative': False},
+                            domain = {'row': 0, 'column': 1},
+                            ))
+            fig0.add_trace(go.Indicator(
                             mode = "delta",
                             # value = status*100,
                             value = int((1+growth)*100000)/1000,
                             title = {"text": "Tingkat Perubahan (%):"},
                             delta = {'reference': int(100), 'relative': False},
-                            domain = {'row': 0, 'column': 1},
+                            domain = {'row': 0, 'column': 2},
                             ))
-            fig2.update_layout(grid = {'rows': 1, 'columns': 2, 'pattern': "independent"})
-            st.plotly_chart(fig2,use_container_width=True)
-#     dfApbd = dfApbd['
+            fig0.update_layout(grid = {'rows': 1, 'columns': 3, 'pattern': "independent"})
+            st.plotly_chart(fig0,use_container_width=True)
+        else:
+            c1,c2 = st.columns((1,1))
+            with c1:
+                st.subheader("Tahun 2018")
+                # position: relative;
+                link1 = f"https://www.lightpollutionmap.info/#zoom={zoom}&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nUm9hZCIsIm92ZXJsYXkiOiJ2aWlyc18yMDE4Iiwib3ZlcmxheWNvbG9yIjp0cnVlLCJvdmVybGF5b3BhY2l0eSI6NjAsImZlYXR1cmVzb3BhY2l0eSI6ODV9"
+                # link1 = f"https://www.lightpollutionmap.info/#zoom=10&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMTgiLCJvdmVybGF5Y29sb3IiOnRydWUsIm92ZXJsYXlvcGFjaXR5Ijo2OSwiZmVhdHVyZXMiOlsiU1FNIiwiU1FNTCJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ=="
+                html1= '''
+                    <style>
+                        .iframe-container { overflow: hidden;margin-top: -50px;}
+                    </style>
+                    <iframe
+                        id="2018map"
+                        class="iframe-container"
+                        src='''+link1+'''
+                        frameborder="20"
+                        width="860"
+                        height="720"
+                    ></iframe>
+                    <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.4/js/iframeResizer.min.js"></script>
+                    <script>
+                    iFrameResize({}, "#2018map")
+                    </script>
+                    '''
+                comp1 = components.html(html1,height=720,
+                        width=880)
+                fig1 = go.Figure()
+                fig1.add_trace(go.Indicator(
+                            mode = "number+delta",
+                            # value = status*100,
+                            value = int(lum*100000)/100000,
+                            title = {"text": "Index Luminosity 2018:"},
+                            delta = {'reference': int(lum*100000)/100000, 'relative': False},
+                            domain = {'row': 0, 'column': 0},
+                            ))
+                
+                st.plotly_chart(fig1)
+            with c2:
+                st.subheader("Tahun 2022")
+                link2 = f"https://www.lightpollutionmap.info/#zoom={zoom}&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nUm9hZCIsIm92ZXJsYXkiOiJ2aWlyc18yMDIyIiwib3ZlcmxheWNvbG9yIjp0cnVlLCJvdmVybGF5b3BhY2l0eSI6NjAsImZlYXR1cmVzb3BhY2l0eSI6ODV9"
+                # link2 = f"https://www.lightpollutionmap.info/#zoom=10&lat={lat}&lon={lon}&state=eyJiYXNlbWFwIjoiTGF5ZXJCaW5nSHlicmlkIiwib3ZlcmxheSI6InZpaXJzXzIwMjIiLCJvdmVybGF5Y29sb3IiOnRydWUsIm92ZXJsYXlvcGFjaXR5Ijo2OSwiZmVhdHVyZXMiOlsiU1FNIiwiU1FNTCJdLCJmZWF0dXJlc29wYWNpdHkiOjg1fQ=="
+                html2 ='''
+                    <style>
+                        .iframe-container {
+                            overflow: hidden;
+                            margin-top: -50px;
+                        }
+                    </style>
+                    <iframe
+                        id="2022map"
+                        class="iframe-container"
+                        src='''+link2+'''
+                        frameborder="20"
+                        width="860"
+                        height="720"
+                    ></iframe>
+                    <script src="https://cdn.jsdelivr.net/npm/iframe-resizer@4.3.4/js/iframeResizer.min.js"></script>
+                    <script>
+                    iFrameResize({}, "#2022map")
+                    </script>
+                    '''
+                comp2 = components.html(html2,height=720,
+                        width=880)
 
-    dfModal = dfModal[dfModal['namapemda']==latlon]
-    st.dataframe(dfModal,use_container_width=True)
-    
-    lumcal2 = st.expander(label='Perhitungan Index Luminosity')
-    with lumcal2:
+                fig2 = go.Figure()
+                fig2.add_trace(go.Indicator(
+                            mode = "number+delta",
+                            # value = status*100,
+                            value = int(lum2*100000)/100000,
+                            title = {"text": "Index Luminosity 2022:"},
+                            delta = {'reference': int(lum*100000)/100000, 'relative': False},
+                            domain = {'row': 0, 'column': 0},
+                            ))
+                fig2.add_trace(go.Indicator(
+                                mode = "delta",
+                                # value = status*100,
+                                value = int((1+growth)*100000)/1000,
+                                title = {"text": "Tingkat Perubahan (%):"},
+                                delta = {'reference': int(100), 'relative': False},
+                                domain = {'row': 0, 'column': 1},
+                                ))
+                fig2.update_layout(grid = {'rows': 1, 'columns': 2, 'pattern': "independent"})
+                st.plotly_chart(fig2,use_container_width=True)
+    #     dfApbd = dfApbd['
+
+        dfModal = dfModal[dfModal['namapemda']==latlon]
+        st.dataframe(dfModal,use_container_width=True)
+
+    else:
+        # lumcal2 = st.expander(label='Perhitungan Index Luminosity')
+        # with lumcal2:
+        st.subheader('Perhitungan & Perbandingan Index Luminosity')
         k1,k2 = st.columns((1,1))
         with k1:
             img3 = st.file_uploader(label='Upload map image 1',type=['png', 'jpg'])

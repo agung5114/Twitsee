@@ -24,7 +24,7 @@ def create_wordcloud(df,column):
             background_color = 'white',
             width = 860,
             stopwords =sw,
-            height = 370
+            height = 350
                 ).generate(' '.join(text))
     fig = px.imshow(wordcloud,title=f'Kata kunci terbanyak')
     fig.update_layout(yaxis={'visible': False, 'showticklabels': False})

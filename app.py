@@ -12,6 +12,9 @@ from datetime import timedelta
 from scraper import getTweets
 from generateWordcloud import create_wordcloud
 
+# from similar import getProgram, apbd
+from classifier import pre_process
+
 end = datetime.date.today()
 start = end - timedelta(days = 31)
 
@@ -22,12 +25,13 @@ sentiment_color = {"negative": "#e96678", "neutral": "#ced4d0", "positive": "#70
 group_color = {"opposers": "#e96678", "supporters": "#70bda0"}
 emotions_emoji = {"anger":"😡","disgust":"🤮", "fear":"😱", "happy":"🤗", "joy":"🤩", "love":"😍", "neutral":"😐", "sad":"😔", "sadness":"😥", "shame":"😳", "surprise":"😮"}
 emotions_color = {"opposers": "#e96678", "supporters": "#70bda0","😡anger":"#de425b","🤮disgust":"#df676e", "😱fear":"#e88b8d", "😔sad":"#eeadad", "😥sadness":"#f1cfce", "😐neutral":"#f1f1f1","😳shame":"#d0ddc9", "😮surprise":"#afc9a2","🤗happy":"#8eb67c", "🤩joy":"#6ca257","😍love":"#488f31"}
-            
+
+@st.cache_data
+def getApbd():
+    dfa = pd.read_excel('Program APBD.xlsx')
+    return dfa
+
 from PIL import Image
-# def main():
-##TOP PAGE
-# st.title("Media Analytics Warning Systems of Money Politics")
-# st.write("Toward Clean & Accountable Local Government")
 st.image(Image.open('maws-banner.png'))
 st.markdown('<style>h1{color:dark-grey;font-size:62px}</style>',unsafe_allow_html=True)
 st.sidebar.image(Image.open('maws-menu.png'))
@@ -242,9 +246,7 @@ elif choice == 'Analisis Data Keuangan':
     
 elif choice == 'Monitoring Program Daerah':
     st.subheader("Program Belanja Daerah Berdasarkan Kata Kunci")
-    # from similar import getProgram, apbd
-    from classifier import pre_process
-    apbd = pd.read_excel('Program APBD.xlsx')
+    apbd = getApbd
     custom_search = st.expander(label='Pencarian Program')
     with custom_search:
         keyw = st.text_input("Masukkan Kata Kunci")
@@ -268,10 +270,11 @@ elif choice == 'Monitoring Program Daerah':
             with c2:
                 fig = px.bar(df, x="Provinsi", y="Nilaianggaran", color="Akun Analisis", barmode = 'stack')
                 st.plotly_chart(fig,use_container_width=True)
-            st.dataframe(df.groupby(['Program','Akun Analisis','Provinsi'],as_index=False).agg({'Nilaianggaran':'sum'}))
+            st.dataframe(df.groupby(['Program','Akun Analisis','Provinsi'],as_index=False).agg({'Nilaianggaran':'sum'}),use_container_width=True)
 
 
 elif choice == 'Luminosity Analysis':
+    dfApbd = getApbd()
     st.subheader('Luminosity Maps')
     import streamlit.components.v1 as components
     # from html2image import Html2Image
@@ -437,7 +440,8 @@ elif choice == 'Luminosity Analysis':
                             ))
             fig2.update_layout(grid = {'rows': 1, 'columns': 2, 'pattern': "independent"})
             st.plotly_chart(fig2,use_container_width=True)
-    
+#     dfApbd = dfApbd['
+    st.dataframe(dfApbd.groupby(['Program','Akun Analisis','Provinsi'],as_index=False).agg({'Nilaianggaran':'sum'}),use_container_width=True)
     lumcal2 = st.expander(label='Perhitungan Index Luminosity')
     with lumcal2:
         k1,k2 = st.columns((1,1))

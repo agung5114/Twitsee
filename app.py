@@ -162,9 +162,11 @@ elif choice == 'Analisis Sentimen & Emosi Publik':
             df['emosi'] = [emotions_emoji[x]+x for x in df['emotion']]
             df['tanggal'] = pd.to_datetime(df['date']).dt.date
             df['count'] = 1
-            df['post'] = df['count']+df['retweetCount']
+            df['engagement'] = df['count']+df['retweetCount']
+            df['group'] = ['opposers' if x in ['anger','fear','sadness','sad'] else 'supporters' for x in df['emotion']]
+            df = df[['tanggal','username','rawContent','sentiment','emosi','group','count','engagement']]
             st.subheader("Tren Sentiment Publik")
-            dfbar = df.groupby(['tanggal','sentiment'],as_index=False).agg({'post':'sum'})
+            dfbar = df.groupby(['tanggal','sentiment'],as_index=False).agg({'count':'sum'})
             linefig = px.bar(dfbar, x='tanggal', y='post', color='sentiment', color_discrete_map=sentiment_color)
             st.plotly_chart(linefig,use_container_width=True)
             col1,col2 = st.columns((1,1))

@@ -33,7 +33,7 @@ def getApbd():
 
 @st.cache_data
 def getModal():
-    dfm = pd.read_excel('Program APBD.xlsx')
+    dfm = pd.read_excel('BelanjaModal.xlsx')
     return dfm
 
 from PIL import Image

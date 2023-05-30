@@ -37,7 +37,7 @@ choice = st.sidebar.selectbox("Pilih Menu",menu)
 
 if choice == 'Monitoring Potensi Risiko':
     st.subheader('Peta Risiko Korupsi Pemerintah Daerah')
-    df = pd.read_csv('kasusAll.csv',sep=";")
+    dfcase = pd.read_csv('kasusAll.csv',sep=";")
     c1,c2 = st.columns((1,1))
     import streamlit.components.v1 as components
     with c1:
@@ -53,7 +53,7 @@ if choice == 'Monitoring Potensi Risiko':
     st.subheader('Penindakan KPK terkait Pemerintah Daerah')
     k1,k2 = st.columns((1,1))
     with k1:
-        dfplot = df.groupby(by=['tahun'],as_index=False).agg({'kepala daerah':'sum','dprd':'sum','dinas':'sum'})
+        dfplot = dfcase.groupby(by=['tahun'],as_index=False).agg({'kepala daerah':'sum','dprd':'sum','dinas':'sum'})
         fig = go.Figure()
         fig.add_trace(go.Bar(
             x=dfplot['tahun'],
@@ -84,7 +84,7 @@ if choice == 'Monitoring Potensi Risiko':
     with k2:
         st.plotly_chart(create_wordcloud(df,'text'))
 
-    dftable = df[['kasus','bulan','tahun','pemda']]
+    dftable = dfcase[['kasus','bulan','tahun','pemda']]
     st.dataframe(dftable,use_container_width=True)
 
 elif choice == 'Analisis Sentimen & Emosi Publik':

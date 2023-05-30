@@ -82,7 +82,7 @@ if choice == 'Monitoring Potensi Risiko':
         fig.update_layout(title_text='Perkembangan kasus per tahun')
         st.plotly_chart(fig,use_container_width=True)
     with k2:
-        st.plotly_chart(create_wordcloud(df,'text'))
+        st.plotly_chart(create_wordcloud(dfcase,'text'))
 
     dftable = dfcase[['kasus','bulan','tahun','pemda']]
     st.dataframe(dftable,use_container_width=True)

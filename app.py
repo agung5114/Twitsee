@@ -60,8 +60,7 @@ if choice == 'Monitoring Potensi Risiko':
             ''',height=720,
                 width=1080)
 #     k1,k2 = st.columns((1,1))
-#     with k1:
-     with c2:
+    with c2:
         st.subheader('Penindakan KPK terkait Pemerintah Daerah')
         dfplot = dfcase.groupby(by=['tahun'],as_index=False).agg({'kepala daerah':'sum','dprd':'sum','dinas':'sum'})
         fig = go.Figure()

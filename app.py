@@ -447,6 +447,7 @@ elif choice == 'Luminosity Analysis':
             st.plotly_chart(fig2,use_container_width=True)
 #     dfApbd = dfApbd['
 
+    dfModal = dfModal[dfModal['namapemda']==latlon]
     st.dataframe(dfModal,use_container_width=True)
     
     lumcal2 = st.expander(label='Perhitungan Index Luminosity')

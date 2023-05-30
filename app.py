@@ -167,7 +167,7 @@ elif choice == 'Analisis Sentimen & Emosi Publik':
             df = df[['tanggal','username','rawContent','sentiment','emosi','group','count','engagement']]
             st.subheader("Tren Sentiment Publik")
             dfbar = df.groupby(['tanggal','sentiment'],as_index=False).agg({'count':'sum'})
-            linefig = px.bar(dfbar, x='tanggal', y='post', color='sentiment', color_discrete_map=sentiment_color)
+            linefig = px.bar(dfbar, x='tanggal', y='count', color='sentiment', color_discrete_map=sentiment_color)
             st.plotly_chart(linefig,use_container_width=True)
             col1,col2 = st.columns((1,1))
             with col1:

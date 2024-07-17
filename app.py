@@ -9,11 +9,11 @@ import plotly.graph_objects as go
 import pandas as pd
 import datetime
 from datetime import timedelta
-from scraper import getTweets
+# from scraper import getTweets
 from generateWordcloud import create_wordcloud
 
 # from similar import getProgram, apbd
-from classifier import pre_process
+# from classifier import pre_process
 from pynetwork import draw_network
 
 end = datetime.date.today()
@@ -133,104 +133,104 @@ elif choice =='Graph Network Analysis':
 elif choice == 'Analisis Sentimen & Emosi Publik':
     # history = st.expander(label="Analisis Data historis Twitter")
     # with history:
-    @st.cache_data
-    def getData():
-        df = pd.read_csv('twitpemda.csv')
-        df['emosi'] = [emotions_emoji[x]+x for x in df['emotion']]
-        df['group'] = ['opposers' if x in ['anger','fear','sadness','sad'] else 'supporters' for x in df['emotion']]
-        # df['bulan'] = pd.to_datetime(df['date']).dt.month
-        # df['tanggal'] = pd.to_datetime(df['date']).dt.date
-        # df['count'] = [1 for x in df['emotion']]
-        # df['engagement'] = df['count']+df['retweetCount']+df['likeCount']
-        df = df[['tanggal','tahun','username','rawContent','sentiment','emosi','group','count','engagement','city']]
-        return df
-    genre = st.sidebar.radio("Pilih Analisis",('Data Historis', 'Realtime'))
-    if genre == 'Data Historis':
-        st.subheader('Histori Persepsi Publik Melalui Media Twitter')
-        df = getData()
-        listpemda = df['city'].unique().tolist()
-        listtahun = df['tahun'].unique().tolist()
-        sb1,sb2 = st.columns((1,1))
-        with sb1:
-            ctr = st.selectbox("Pilih Pemda",['All']+listpemda)
-        with sb2:
-            thn = st.selectbox("Pilih Tahun",listtahun, index=listtahun.index(2023))
+    # @st.cache_data
+    # def getData():
+    #     df = pd.read_csv('twitpemda.csv')
+    #     df['emosi'] = [emotions_emoji[x]+x for x in df['emotion']]
+    #     df['group'] = ['opposers' if x in ['anger','fear','sadness','sad'] else 'supporters' for x in df['emotion']]
+    #     # df['bulan'] = pd.to_datetime(df['date']).dt.month
+    #     # df['tanggal'] = pd.to_datetime(df['date']).dt.date
+    #     # df['count'] = [1 for x in df['emotion']]
+    #     # df['engagement'] = df['count']+df['retweetCount']+df['likeCount']
+    #     df = df[['tanggal','tahun','username','rawContent','sentiment','emosi','group','count','engagement','city']]
+    #     return df
+    # genre = st.sidebar.radio("Pilih Analisis",('Data Historis', 'Realtime'))
+    # if genre == 'Data Historis':
+    #     st.subheader('Histori Persepsi Publik Melalui Media Twitter')
+    #     df = getData()
+    #     listpemda = df['city'].unique().tolist()
+    #     listtahun = df['tahun'].unique().tolist()
+    #     sb1,sb2 = st.columns((1,1))
+    #     with sb1:
+    #         ctr = st.selectbox("Pilih Pemda",['All']+listpemda)
+    #     with sb2:
+    #         thn = st.selectbox("Pilih Tahun",listtahun, index=listtahun.index(2023))
         
-        # if st.button("Jalankan"):
-        if ctr == 'All':
-            st.subheader("Tren Sentiment Publik")
-            df = df[df['tahun']==thn]
-            dfplot = df.groupby(by=['tanggal','sentiment'],as_index=False).agg({'engagement':'sum'})
-            linefig = px.bar(df, x='tanggal', y='engagement', color='sentiment', color_discrete_map=sentiment_color)
-            st.plotly_chart(linefig,use_container_width=True)
-            st.dataframe(df,use_container_width=True)
-        else:
-            dfpemda = df[df['city'].isin([ctr])]
-            dfpwmda= dfpemda[dfpemda['tahun']==thn]
-            # st.line_chart(df)
-            c1,c2 = st.columns((1,1))
-            with c1:
-                st.subheader("Sebaran Sentiment Publik")
-                piefig = px.pie(dfpemda, names='sentiment', values='count', color='sentiment', hole=.6, color_discrete_map=sentiment_color)
-                st.plotly_chart(piefig,use_container_width=True)
-            with c2:
-                st.subheader("Sebaran Emosi Publik")
-                # barfig = px.pie(dfpemda, names='emosi', values='engagement', color='emosi',hole=.6,color_discrete_map=emotions_color)
-                figsun = px.sunburst(df, path=['group','emosi'],values='engagement')
-                figsun.update_traces(textinfo='label+value+percent entry')
-                figsun.update_traces(marker_colors=[emotions_color[cat] for cat in figsun.data[-1].labels])
-                st.plotly_chart(figsun,use_container_width=True)
-                # barfig = px.bar(df, x='emoji', y='likeCount', color='emoji', color_discrete_map=emotions_color)
-                # st.plotly_chart(barfig,use_container_width=True)
-            dff = dfpemda
-            st.dataframe(dff,use_container_width=True)
-    else:
-        st.write("Sentimen dan Emosi Publik Terkini")
-    # custom_search = st.expander(label='Histori Persepsi Publik Melalui Media Twitter')
-    # with custom_search:
-        # realtime = st.expander(label="Sentimen dan Emosi Publik Terkini")
-        # with realtime:
-        submitted = st.empty()
-        with st.form(key='text'):
-            search_text = st.text_input("Pencarian Tweet terbaru")
-            submitted = st.form_submit_button('Submit')
-        # st.subheader("Sentimen dan Emosi Publik Terkini")
-        # c1,c2 = st.columns((1,4))
-        # with c1:
-        # with c2:
-        #     st.empty()
-        if submitted:
-            raw_text = search_text
-            try:
-                df = getTweets(raw_text,start,end,50)
-                df['emosi'] = [emotions_emoji[x]+x for x in df['emotion']]
-                df['tanggal'] = pd.to_datetime(df['date']).dt.date
-                df['count'] = 1
-                df['engagement'] = df['count']+df['retweetCount']
-                df['group'] = ['opposers' if x in ['anger','fear','sadness','sad'] else 'supporters' for x in df['emotion']]
-                df = df[['tanggal','username','rawContent','sentiment','emosi','group','count','engagement']]
-                st.subheader("Tren Sentiment Publik")
-                dfbar = df.groupby(['tanggal','sentiment'],as_index=False).agg({'count':'sum'})
-                linefig = px.bar(dfbar, x='tanggal', y='count', color='sentiment', color_discrete_map=sentiment_color)
-                st.plotly_chart(linefig,use_container_width=True)
-                col1,col2 = st.columns((1,1))
-                with col1:
-                    st.subheader("Sebaran Sentiment Publik")
-                    piefig = px.pie(df, names='sentiment', values='count', color='sentiment', hole=.6, color_discrete_map=sentiment_color)
-                    st.plotly_chart(piefig,use_container_width=True)
-                with col2:
-                    st.subheader("Sebaran Emosi Publik")
-                    # barfig = px.pie(df, names='emosi', values='likeCount', color='emosi',hole=.6,color_discrete_map=emotions_color)
-                    # st.plotly_chart(barfig,use_container_width=True)
-                    figsun = px.sunburst(df, path=['group','emosi'],values='engagement')
-                    figsun.update_traces(textinfo='label+value+percent entry')
-                    figsun.update_traces(marker_colors=[emotions_color[cat] for cat in figsun.data[-1].labels])
-                    st.plotly_chart(figsun,use_container_width=True)
-                st.dataframe(df,use_container_width=True)
-            except:
-                st.write("Data tidak ditemukan")
-        else:
-            st.write("masukkan kata pencarian")
+    #     # if st.button("Jalankan"):
+    #     if ctr == 'All':
+    #         st.subheader("Tren Sentiment Publik")
+    #         df = df[df['tahun']==thn]
+    #         dfplot = df.groupby(by=['tanggal','sentiment'],as_index=False).agg({'engagement':'sum'})
+    #         linefig = px.bar(df, x='tanggal', y='engagement', color='sentiment', color_discrete_map=sentiment_color)
+    #         st.plotly_chart(linefig,use_container_width=True)
+    #         st.dataframe(df,use_container_width=True)
+    #     else:
+    #         dfpemda = df[df['city'].isin([ctr])]
+    #         dfpwmda= dfpemda[dfpemda['tahun']==thn]
+    #         # st.line_chart(df)
+    #         c1,c2 = st.columns((1,1))
+    #         with c1:
+    #             st.subheader("Sebaran Sentiment Publik")
+    #             piefig = px.pie(dfpemda, names='sentiment', values='count', color='sentiment', hole=.6, color_discrete_map=sentiment_color)
+    #             st.plotly_chart(piefig,use_container_width=True)
+    #         with c2:
+    #             st.subheader("Sebaran Emosi Publik")
+    #             # barfig = px.pie(dfpemda, names='emosi', values='engagement', color='emosi',hole=.6,color_discrete_map=emotions_color)
+    #             figsun = px.sunburst(df, path=['group','emosi'],values='engagement')
+    #             figsun.update_traces(textinfo='label+value+percent entry')
+    #             figsun.update_traces(marker_colors=[emotions_color[cat] for cat in figsun.data[-1].labels])
+    #             st.plotly_chart(figsun,use_container_width=True)
+    #             # barfig = px.bar(df, x='emoji', y='likeCount', color='emoji', color_discrete_map=emotions_color)
+    #             # st.plotly_chart(barfig,use_container_width=True)
+    #         dff = dfpemda
+    #         st.dataframe(dff,use_container_width=True)
+    # else:
+    #     st.write("Sentimen dan Emosi Publik Terkini")
+    # # custom_search = st.expander(label='Histori Persepsi Publik Melalui Media Twitter')
+    # # with custom_search:
+    #     # realtime = st.expander(label="Sentimen dan Emosi Publik Terkini")
+    #     # with realtime:
+    #     submitted = st.empty()
+    #     with st.form(key='text'):
+    #         search_text = st.text_input("Pencarian Tweet terbaru")
+    #         submitted = st.form_submit_button('Submit')
+    #     # st.subheader("Sentimen dan Emosi Publik Terkini")
+    #     # c1,c2 = st.columns((1,4))
+    #     # with c1:
+    #     # with c2:
+    #     #     st.empty()
+    #     if submitted:
+    #         raw_text = search_text
+    #         try:
+    #             df = getTweets(raw_text,start,end,50)
+    #             df['emosi'] = [emotions_emoji[x]+x for x in df['emotion']]
+    #             df['tanggal'] = pd.to_datetime(df['date']).dt.date
+    #             df['count'] = 1
+    #             df['engagement'] = df['count']+df['retweetCount']
+    #             df['group'] = ['opposers' if x in ['anger','fear','sadness','sad'] else 'supporters' for x in df['emotion']]
+    #             df = df[['tanggal','username','rawContent','sentiment','emosi','group','count','engagement']]
+    #             st.subheader("Tren Sentiment Publik")
+    #             dfbar = df.groupby(['tanggal','sentiment'],as_index=False).agg({'count':'sum'})
+    #             linefig = px.bar(dfbar, x='tanggal', y='count', color='sentiment', color_discrete_map=sentiment_color)
+    #             st.plotly_chart(linefig,use_container_width=True)
+    #             col1,col2 = st.columns((1,1))
+    #             with col1:
+    #                 st.subheader("Sebaran Sentiment Publik")
+    #                 piefig = px.pie(df, names='sentiment', values='count', color='sentiment', hole=.6, color_discrete_map=sentiment_color)
+    #                 st.plotly_chart(piefig,use_container_width=True)
+    #             with col2:
+    #                 st.subheader("Sebaran Emosi Publik")
+    #                 # barfig = px.pie(df, names='emosi', values='likeCount', color='emosi',hole=.6,color_discrete_map=emotions_color)
+    #                 # st.plotly_chart(barfig,use_container_width=True)
+    #                 figsun = px.sunburst(df, path=['group','emosi'],values='engagement')
+    #                 figsun.update_traces(textinfo='label+value+percent entry')
+    #                 figsun.update_traces(marker_colors=[emotions_color[cat] for cat in figsun.data[-1].labels])
+    #                 st.plotly_chart(figsun,use_container_width=True)
+    #             st.dataframe(df,use_container_width=True)
+    #         except:
+    #             st.write("Data tidak ditemukan")
+    #     else:
+    #         st.write("masukkan kata pencarian")
 elif choice == 'Analisis Data Keuangan':
     st.subheader("Analisis Risiko Berdasarkan Belanja dan Histori Penindakan KPK")
     # ipm = pd.read_csv('ipm.csv')

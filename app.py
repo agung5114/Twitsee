@@ -131,6 +131,7 @@ elif choice =='Graph Network Analysis':
     st.dataframe(dfnet, use_container_width=True)
 
 elif choice == 'Analisis Sentimen & Emosi Publik':
+    st.write('404')
     # history = st.expander(label="Analisis Data historis Twitter")
     # with history:
     # @st.cache_data
